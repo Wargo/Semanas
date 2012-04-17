@@ -1,0 +1,1 @@
+/Users/albertsorianogarcia/Documents/Titanium Studio Workspace/Semanas/Resources/ui/AppWindow.js
