@@ -1,3 +1,5 @@
+Ti.include('/lang.js');
+
 function AppTabGroup() {
 	//declare module dependencies
 	var AppWindow = require('ui/AppWindow');

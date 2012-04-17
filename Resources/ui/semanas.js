@@ -1,3 +1,5 @@
+Ti.include('/lang.js');
+
 var self = Titanium.UI.currentWindow;
 
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
@@ -10,7 +12,6 @@ var view = Ti.UI.createScrollView({
 })
 
 for (row in data) {
-	//alert(data[row].title)
 	var title = Ti.UI.createLabel({
 		text:data[row].title,
 		height:'auto',
