@@ -9,6 +9,7 @@ function AppTabGroup() {
 	
 	//create app tabs
 	var win1 = new AppWindow(L('Semanas'), 'ui/semanas.js'),
+		win4 = new AppWindow(L('Semanas2'), 'ui/semanas2.js'),
 		win2 = new AppWindow(L('Configuración'), 'ui/config.js'),
 		win3 = new AppWindow(L('Newsletter'), 'ui/newsletter.js');
 	
@@ -18,6 +19,13 @@ function AppTabGroup() {
 		window: win1
 	});
 	win1.containingTab = tab1;
+	
+	var tab4 = Ti.UI.createTab({
+		title: L('Semanas 2'),
+		icon: '/images/KS_nav_ui.png',
+		window: win4
+	});
+	win4.containingTab = tab4;
 	
 	var tab2 = Ti.UI.createTab({
 		title: L('Configuración'),
@@ -36,6 +44,7 @@ function AppTabGroup() {
 	self.addTab(tab1);
 	self.addTab(tab2);
 	self.addTab(tab3);
+	self.addTab(tab4);
 	
 	return self;
 };

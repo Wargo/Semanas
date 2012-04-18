@@ -9,7 +9,7 @@ data = eval(local_data.text);
 var view = Ti.UI.createScrollView({
 	layout:'vertical',
 	contentHeight:'auto'
-})
+});
 
 for (row in data) {
 	var title = Ti.UI.createLabel({
@@ -32,7 +32,6 @@ for (row in data) {
 		bottom:20
 	})
 	
-	
 	view.add(title);
 	view.add(label);
 	view.add(image);
@@ -40,3 +39,5 @@ for (row in data) {
 }
 
 self.add(view);
+
+view.scrollTo(0,500);
