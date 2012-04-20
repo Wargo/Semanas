@@ -100,7 +100,23 @@ var todayButton = Ti.UI.createButton({
 	style:Ti.UI.iPhone.SystemButton.SAVE
 });
 
-self.rightNavButton = todayButton;
+if (Ti.Platform.osname == 'android') {
+	var todayButton = Ti.UI.createView({
+		backgroundColor:'#000',
+		opacity:0.8,
+		bottom:0,
+		width:'100%',
+		height:60,
+	})
+	var text = Ti.UI.createLabel({
+		text:L('Acceder a la semana actual'),
+		color:'#FFF'
+	})
+	todayButton.add(text);
+	self.add(todayButton);
+} else {
+	self.rightNavButton = todayButton;
+}
 
 todayButton.addEventListener('click', function() {
 	if (Ti.App.Properties.getString('formattedDate')) {
