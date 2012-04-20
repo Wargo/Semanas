@@ -6,6 +6,26 @@ var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirector
 var local_data = readFile.read();
 data = eval(local_data.text);
 
+data = [];
+var cont = 0;
+for (var i = 1; i <= 42; i++) {
+	//for (var j = 1; j <= Math.random() * 10 + 1; j ++) {
+	for (var j = 1; j <= 3; j ++) {
+		item = {
+			title:'titulo ' + cont,
+			intro:'Una donna celiaca come deve comportarsi in gravidanza?',
+			url:'data/articulo2.html',
+			hasChild:true,
+			leftImage:'data/images/prueba.png',
+		}
+		if (j == 1) {
+			item.header = 'Semana ' + i;
+		}
+		cont ++;
+		data.push(item);
+	}
+}
+
 tableData = [];
 index = 0;
 for (i in data) {
@@ -83,11 +103,32 @@ var todayButton = Ti.UI.createButton({
 self.rightNavButton = todayButton;
 
 todayButton.addEventListener('click', function() {
-	tableView.scrollToIndex(getRow(4, data), {
-		animated:true,
-		position:Ti.UI.iPhone.TableViewScrollPosition.TOP
-	});
+	if (Ti.App.Properties.getString('formattedDate')) {
+		goTo();
+	} else {
+		alert(L('Necesitas introducir tu fecha de parto'));
+	}
 });
+
+goTo();
+
+function goTo() {
+	var today = new Date();
+	var date = Ti.App.Properties.getString('formattedDate');
+	date = date.split('-');
+	date = new Date(date[0], date[1] - 1, date[2]);
+	var diff = date.getTime() - today.getTime();
+	var week = 40 - Math.round(diff/(1000 * 60 * 60 * 24 * 7));
+	
+	if (Ti.Platform.osname == 'android') {
+		tableView.scrollToIndex(getRow(week, data));
+	} else {
+		tableView.scrollToIndex(getRow(week, data), {
+			animated:true,
+			position:Ti.UI.iPhone.TableViewScrollPosition.TOP
+		});
+	}
+}
 
 function sleep(milliseconds) {
 	var ini = new Date().getTime();
@@ -100,8 +141,14 @@ function getRow(num, data) {
 	for (i in data) {
 		if (data[i].header) {
 			aux ++;
+			if (Ti.Platform.osname == 'android') {
+				cont ++;
+			}
 		}
 		if (aux == num) {
+			if (Ti.Platform.osname == 'android') {
+				cont = cont - 1;
+			}
 			return cont;
 		}
 		cont ++;
