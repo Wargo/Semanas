@@ -14,7 +14,7 @@ for (var i = 1; i <= 42; i++) {
 		item = {
 			title:'titulo ' + cont,
 			intro:'Una donna celiaca come deve comportarsi in gravidanza?',
-			url:'data/articulo2.html',
+			url:'data/articulo1.html',
 			hasChild:true,
 			leftImage:'data/images/prueba.png',
 		}
@@ -93,6 +93,21 @@ tableView.addEventListener('click', function(e) {
 	var win = Ti.UI.createWindow();
 	win.add(webview);
 	Ti.UI.currentTab.open(win);
+	Ti.App.addEventListener('do_something', function(e) {
+	
+		var	script = 'var styles = document.createElement(\'link\');';
+			script += 'styles.setAttribute(\'rel\', \'stylesheet\');';
+			script += 'styles.setAttribute(\'type\', \'text/css\');';
+			if (Ti.Platform.osname == 'android') {
+				script += 'styles.setAttribute(\'href\', \'styles_android.css\');';
+			} else {
+				script += 'styles.setAttribute(\'href\', \'styles_ios.css\');';
+			}
+			
+			script += 'document.getElementsByTagName("head")[0].appendChild(styles);';
+			
+		webview.evalJS(script);
+	});
 });
 
 var todayButton = Ti.UI.createButton({
@@ -126,7 +141,9 @@ todayButton.addEventListener('click', function() {
 	}
 });
 
-goTo();
+if (Ti.App.Properties.getString('formattedDate')) {
+	goTo();
+}
 
 function goTo() {
 	var today = new Date();
@@ -158,12 +175,12 @@ function getRow(num, data) {
 		if (data[i].header) {
 			aux ++;
 			if (Ti.Platform.osname == 'android') {
-				cont ++;
+				cont ++; // Para que cuente los headers
 			}
 		}
 		if (aux == num) {
 			if (Ti.Platform.osname == 'android') {
-				cont = cont - 1;
+				cont = cont - 1; // Para que muestre el header
 			}
 			return cont;
 		}

@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="styles.css" type="text/css" />
+		<script>
+    		var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'ui/data/styles.css');
+			var styles = readFile.read();
+			alert(styles);
+    	</script>
 	</head>
 	<body>
 		<h1>Celiachia e gravidanza</h1>

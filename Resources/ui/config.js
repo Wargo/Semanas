@@ -86,7 +86,7 @@ view.addEventListener('click', function() {
 		style:Ti.UI.iPhone.SystemButton.SAVE,
 		left:'15%',
 		width:'30%',
-		top: '40%',
+		top: '50%',
 		zIndex:999
 	});
 	
@@ -94,7 +94,7 @@ view.addEventListener('click', function() {
 		title:L('Cancelar'),
 		right:'15%',
 		width:'30%',
-		top: '40%',
+		top: '50%',
 		zIndex:999
 	});
 	
