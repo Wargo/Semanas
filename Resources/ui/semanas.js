@@ -10,11 +10,11 @@ data = [];
 var cont = 0;
 for (var i = 1; i <= 42; i++) {
 	//for (var j = 1; j <= Math.random() * 10 + 1; j ++) {
-	for (var j = 1; j <= 3; j ++) {
+	for (var j = 1; j <= 2; j ++) {
 		item = {
 			title:'titulo ' + cont,
 			intro:'Una donna celiaca come deve comportarsi in gravidanza?',
-			url:'data/articulo1.html',
+			url:'data/articulo' + j + '.html',
 			hasChild:true,
 			leftImage:'data/images/prueba.png',
 		}
@@ -93,8 +93,7 @@ tableView.addEventListener('click', function(e) {
 	var win = Ti.UI.createWindow();
 	win.add(webview);
 	Ti.UI.currentTab.open(win);
-	Ti.App.addEventListener('do_something', function(e) {
-	
+	Ti.App.addEventListener('printStyles', function(e) {
 		var	script = 'var styles = document.createElement(\'link\');';
 			script += 'styles.setAttribute(\'rel\', \'stylesheet\');';
 			script += 'styles.setAttribute(\'type\', \'text/css\');';

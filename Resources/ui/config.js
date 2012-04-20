@@ -2,13 +2,14 @@ Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
 
-self.backgroundColor = '#429BDA'
+self.backgroundColor = '#429BDA';
+self.backgroundImage = '/images/bg.jpg'
 
 var view = Ti.UI.createView({
 	top:5,
 	backgroundColor:'#FFF',
 	height:50,
-	width:'100%'
+	width:'97%'
 });
 
 var label1 = Ti.UI.createLabel({
@@ -141,7 +142,7 @@ var view2 = Ti.UI.createView({
 	top:56,
 	backgroundColor:'#FFF',
 	height:50,
-	width:'100%'
+	width:'97%'
 });
 
 var label3 = Ti.UI.createLabel({
@@ -227,11 +228,11 @@ var view3 = Ti.UI.createView({
 	top:107,
 	backgroundColor:'#FFF',
 	height:50,
-	width:'100%'
+	width:'97%'
 });
 
 var label5 = Ti.UI.createLabel({
-	text:L('¿Quieres recibir Newsletter?'),
+	text:L('¿Recibir Newsletter?'),
 	color:'#000',
 	top:12,
 	left:10
