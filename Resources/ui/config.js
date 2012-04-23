@@ -38,12 +38,7 @@ if (Ti.App.Properties.getString('formattedDate')) {
 	var formattedDate = null;
 }
 
-var canClick = true;
 view.addEventListener('click', function() {
-	if (!canClick) {
-		return false;
-	}
-	canClick = false;
 	if (formattedDate) {
 		var date = formattedDate.split('-');
 		date = new Date(date[0], date[1] - 1, date[2]);
@@ -58,19 +53,7 @@ view.addEventListener('click', function() {
 	});
 	
 	datePicker.addEventListener('change', function(e) {
-		currentDate = e.value;
-		var day = currentDate.getDate().toString();
-		var month = currentDate.getMonth() + 1;
-		month = month.toString();
-		var year = currentDate.getFullYear().toString();
-		
-		if (day.length < 2) {
-			day = '0' + day;
-		}
-		if (month.length < 2) {
-			month = '0' + month;
-		}
-		formattedDate = year + '-' + month + '-' + day;
+		formattedDate = transformDate(e.value);
 	});
 	
 	var dialog = Ti.UI.createView({
@@ -103,22 +86,91 @@ view.addEventListener('click', function() {
 		self.rightNavButton = null;
 		self.remove(dialog);
 		self.remove(datePicker);
+		
 		Ti.App.Properties.setString('formattedDate', formattedDate);
 		if (formattedDate) {
 			showDate = formattedDate.split('-');
 			label2.text = showDate[2] + '/' + showDate[1] + '/' + showDate[0];
 		}
-		canClick = true;
 	});
 	
 	cancelButton.addEventListener('click', function(e){
 		self.rightNavButton = null;
 		self.remove(dialog);
 		self.remove(datePicker);
-		canClick = true;
 	});
 	
+	var helpButton = Ti.UI.createButton({
+		title:L('¿No conoces tu fecha de parto?'),
+		width:'80%',
+		height:40,
+		top:20,
+		zIndex:999
+	});
+	
+	helpButton.addEventListener('click', function() {
+		var helpWindow = Ti.UI.createWindow({
+			title:L('Fecha de parto'),
+			backgroundColor:'#FFF'
+		});
+		var helpText = Ti.UI.createLabel({
+			text:L('Para obtener tu fecha de parto, escribe aquí la fecha de tu última regla'),
+			top:10,
+			left:10,
+			right:10
+		});
+		var helpPicker = Ti.UI.createPicker({
+			type:Ti.UI.PICKER_TYPE_DATE,
+			bottom:0
+		});
+		var helpDoneButton = Ti.UI.createButton({
+			title:L('Obtener'),
+			width:120,
+			height:40,
+			top:'25%'
+		});
+		if (Ti.Platform.osname == 'android') {
+			helpDoneButton.height = 50;
+			helpPicker.top = '50%';
+			helpWindow.add(helpDoneButton);
+		} else {
+			helpWindow.rightNavButton = helpDoneButton;
+		}
+		
+		var now = new Date();
+		var helpDate = transformDate(now);
+		helpPicker.addEventListener('change', function(e) {
+			helpDate = transformDate(e.value);
+		});
+		
+		helpWindow.add(helpText);
+		helpWindow.add(helpPicker);
+		Ti.UI.currentTab.open(helpWindow);
+		
+		helpDoneButton.addEventListener('click', function() {
+			var helpCurrentDate = helpDate.split('-');
+			helpCurrentDate = new Date(helpCurrentDate[0], helpCurrentDate[1] - (-8), helpCurrentDate[2] - (-14));
+			
+			formattedDate = transformDate(helpCurrentDate);
+			Ti.App.Properties.setString('formattedDate', formattedDate);
+			datePicker.value = helpCurrentDate;  // Esto no va en Android
+			
+			if (Ti.Platform.osname == 'android') {
+				self.remove(dialog);
+				
+				showDate = formattedDate.split('-');
+				label2.text = showDate[2] + '/' + showDate[1] + '/' + showDate[0];
+			}
+			helpWindow.close();
+		});
+	});
+	
+	dialog.add(helpButton);
+	
 	if (Ti.Platform.osname == 'android') {
+		helpButton.bottom = 20;
+		helpButton.height = 50;
+		helpButton.top = null;
 		dialog.add(doneButton);
 		dialog.add(cancelButton);
 		dialog.add(datePicker);
@@ -217,6 +269,7 @@ view2.addEventListener('click', function() {
 		default_email = null;
 	});	
 	cancelButton2.addEventListener('click', function(e) {
+		textField.blur();
 		self.remove(dialog2);
 	});
 
@@ -305,4 +358,20 @@ if (Ti.Platform.osname == 'android') {
 	label1.top = label2.top = label3.top = label4.top = label5.top = 20;
 	switcher.top = 5;
 	deleteDataButton.width = 250;
+}
+
+function transformDate(currentDate) {
+	var day = currentDate.getDate().toString();
+	var month = currentDate.getMonth() + 1;
+	month = month.toString();
+	var year = currentDate.getFullYear().toString();
+	
+	if (day.length < 2) {
+		day = '0' + day;
+	}
+	if (month.length < 2) {
+		month = '0' + month;
+	}
+	helpDate = year + '-' + month + '-' + day;
+	return helpDate;
 }

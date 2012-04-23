@@ -9,7 +9,7 @@ function AppTabGroup() {
 	
 	//create app tabs
 	var win1 = new AppWindow(L('Semanas'), 'ui/semanas.js'),
-		win4 = new AppWindow(L('Config'), 'ui/config.js'),
+		win4 = new AppWindow(L('Configuración'), 'ui/config.js'),
 		win2 = new AppWindow(L('Fecha Parto'), 'ui/fecha.js'),
 		win3 = new AppWindow(L('Newsletter'), 'ui/newsletter.js');
 	
