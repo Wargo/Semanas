@@ -2,6 +2,43 @@ Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
 
+if (Ti.Platform.osname == 'android') {
+	var intent = Ti.Android.createIntent({
+		action:Ti.Android.ACTION_MAIN,
+		//data:'pruebas',
+		//url:'app.js',
+		packageName:Ti.App.id,
+		category:Ti.Android.CATEGORY_LAUNCHER
+	});
+	var pending = Ti.Android.createPendingIntent({
+		activity:Ti.Android.currentActivity,
+		intent:intent,
+		type:Ti.Android.PENDING_INTENT_FOR_ACTIVITY,
+		flags:Ti.Android.FLAG_UPDATE_CURRENT
+	});
+	var notification = Ti.Android.createNotification({
+		icon:0x7f020000,
+		contentTitle:'Nueva Semana',
+		contentText:'bla bla bla blu blu blu',
+		tickerText:L('Nueva notificación...'),
+		contentIntent:pending,
+		//when: new Date().getTime()// + 120000,
+		//when: 0, // Para que no salga la fecha en la notificación
+	});
+	
+	Ti.Android.NotificationManager.notify(1, notification);
+} else {
+	var d = new Date(new Date().getTime() + 15000);
+	
+	var notification = Ti.App.iOS.scheduleLocalNotification({
+		alertBody:L('Semana actual de tu embarazo'),
+		alertAction:L('Ver Semana'),
+		//userInfo:{'key':'value'},
+		date:d,
+		//repeat:'weekly'
+	});
+}
+
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
 var local_data = readFile.read();
 data = eval(local_data.text);
