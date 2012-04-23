@@ -87,7 +87,8 @@ view.addEventListener('click', function() {
 		self.remove(dialog);
 		self.remove(datePicker);
 		
-		Ti.App.Properties.setString('formattedDate', formattedDate);
+		setDate(formattedDate);
+		//Ti.App.Properties.setString('formattedDate', formattedDate);
 		if (formattedDate) {
 			showDate = formattedDate.split('-');
 			label2.text = showDate[2] + '/' + showDate[1] + '/' + showDate[0];
@@ -152,7 +153,8 @@ view.addEventListener('click', function() {
 			helpCurrentDate = new Date(helpCurrentDate[0], helpCurrentDate[1] - (-8), helpCurrentDate[2] - (-14));
 			
 			formattedDate = transformDate(helpCurrentDate);
-			Ti.App.Properties.setString('formattedDate', formattedDate);
+			setDate(formattedDate);
+			//Ti.App.Properties.setString('formattedDate', formattedDate);
 			datePicker.value = helpCurrentDate;  // Esto no va en Android
 			
 			if (Ti.Platform.osname == 'android') {
@@ -339,11 +341,11 @@ deleteDataButton.addEventListener('click', function() {
 			return;
 		}
 		Ti.App.Properties.setString('email', null);
-		Ti.App.Properties.setString('formattedDate', null);
+		setDate(null);
 		Ti.App.Properties.setString('newsletter', null);
 		label2.text = L('[Seleccionar]');
 		label4.text = L('[Seleccionar]');
-		default_email = L('[Seleccionar]')
+		default_email = L('[Seleccionar]');
 		switcher.value = false;
 	});
 });
@@ -374,4 +376,19 @@ function transformDate(currentDate) {
 	}
 	helpDate = year + '-' + month + '-' + day;
 	return helpDate;
+}
+
+function setDate(date) {
+	Ti.App.Properties.setString('formattedDate', date);
+	
+	if (date) {
+		var newDate = new Date(new Date().getTime + 24 * 60 * 60 * 1000); // 7 *
+		var notification = Ti.App.iOS.scheduleLocalNotification({
+			alertBody:L('Semana actual de tu embarazo'),
+			alertAction:L('Ver semana'),
+			date:newDate,
+			repeat:'daily' // weekly
+		});
+	}
+
 }

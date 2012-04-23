@@ -22,21 +22,12 @@ if (Ti.Platform.osname == 'android') {
 		contentText:'bla bla bla blu blu blu',
 		tickerText:L('Nueva notificación...'),
 		contentIntent:pending,
-		//when: new Date().getTime()// + 120000,
+		when: new Date().getTime() + 120000,
 		//when: 0, // Para que no salga la fecha en la notificación
 	});
+	alert(notification.when)
 	
 	Ti.Android.NotificationManager.notify(1, notification);
-} else {
-	var d = new Date(new Date().getTime() + 15000);
-	
-	var notification = Ti.App.iOS.scheduleLocalNotification({
-		alertBody:L('Semana actual de tu embarazo'),
-		alertAction:L('Ver Semana'),
-		//userInfo:{'key':'value'},
-		date:d,
-		//repeat:'weekly'
-	});
 }
 
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
@@ -47,13 +38,14 @@ data = [];
 var cont = 1;
 for (var i = 1; i <= 42; i++) {
 	//for (var j = 1; j <= Math.random() * 10 + 1; j ++) {
-	for (var j = 1; j <= 2; j ++) {
+	for (var j = 1; j <= 3; j ++) {
+		exampleImage = ['bebe.gif', 'general.gif', 'mama.gif'];
 		item = {
 			title:'Título ' + cont,
 			intro:'Una donna celiaca come deve comportarsi in gravidanza? Una donna celiaca come deve comportarsi in gravidanza? Una donna celiaca come deve comportarsi in gravidanza?',
 			url:'data/articulo' + j + '.html',
 			hasChild:true,
-			leftImage:'data/images/prueba.png',
+			leftImage:'data/images/' + exampleImage[j - 1],
 		}
 		if (j == 1) {
 			item.header = 'Semana ' + i;
@@ -90,11 +82,10 @@ for (i in data) {
 	});
 
 	if (Ti.Platform.osname != 'android') {
-		title.left = 60;
+		intro.left = title.left = 80;
 		title.top = 6;
 		title.font = {fontSize:18};
 		intro.font = {fontSize:14};
-		intro.left = 60;
 		if (Ti.Platform.osname == 'iphone') {
 			title.width = 230;
 			intro.width = 230;
