@@ -34,6 +34,7 @@ var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirector
 var local_data = readFile.read();
 data = eval(local_data.text);
 
+/*
 data = [];
 var cont = 1;
 for (var i = 1; i <= 42; i++) {
@@ -54,6 +55,7 @@ for (var i = 1; i <= 42; i++) {
 		data.push(item);
 	}
 }
+*/
 
 tableData = [];
 index = 0;
@@ -82,7 +84,7 @@ for (i in data) {
 	});
 
 	if (Ti.Platform.osname != 'android') {
-		intro.left = title.left = 80;
+		intro.left = title.left = 70;
 		title.top = 6;
 		title.font = {fontSize:18};
 		intro.font = {fontSize:14};
@@ -125,23 +127,6 @@ tableView.addEventListener('click', function(e) {
 	win.add(webview);
 	Ti.UI.currentTab.open(win);
 	Ti.App.addEventListener('printStyles', function(e) {
-		/*
-		var	script = 'var styles = document.createElement(\'link\');';
-		script += 'styles.setAttribute(\'rel\', \'stylesheet\');';
-		script += 'styles.setAttribute(\'type\', \'text/css\');';
-		if (Ti.Platform.osname == 'android') {
-			script += 'styles.setAttribute(\'href\', \'styles_android.css\');';
-		} else {
-			script += 'styles.setAttribute(\'href\', \'styles_ios.css\');';
-		}
-		script += 'document.getElementsByTagName("head")[0].appendChild(styles);';
-		webview.evalJS(script);
-		
-		var script2 = 'var prueba = document.createElement(\'div\');';
-		script2 += 'prueba.innerHTML = \'hola a todos\';';
-		script2 += 'document.getElementsByTagName("body")[0].appendChild(prueba);';
-		webview.evalJS(script2);
-		*/
 		var styles = '';
 		if (Ti.Platform.osname == 'android') {
 			styles = 'styles_android.css';

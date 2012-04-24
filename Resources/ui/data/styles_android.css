@@ -1,5 +1,5 @@
 body {width:310px;font-family:Arial; background-color: #EDF8F8; color:#333;}
-img {float: left; max-width: 100px; margin: 0 5px 5px 0; border: solid 1px #999; padding: 2px;}
+img {float: left; max-width: 100px; margin: 0 5px 2px 0; border: solid 1px #999; padding: 2px;}
 h1 {color:#257CBC; font-weight: bold; font-size: 1.5em; text-align: center;}
 a {color:#257CBC;}
-p {text-align: justify;}
+p {text-align: left;}
