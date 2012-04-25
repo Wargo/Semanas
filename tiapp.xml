@@ -37,6 +37,17 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
+    	<!--
+    	<activities>
+	    	<activity url="app.js">
+	    		<intent-filter>
+	    			<action android:name="android.intent.action.VIEW" />
+	    			<category android:name="android.intent.action.DEFAULT" />
+	    			<category android:name="android.intent.action.BROWSABLE" />
+	    		</intent-filter>
+	    	</activity>
+		</activities>
+		-->
     	<services>
     		<service type="interval" url="notification.js" />
     	</services>

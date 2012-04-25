@@ -1,11 +1,11 @@
-Ti.API.info('Recibir notificación: ' + Ti.App.Properties.getString('receiveNotifications'))
-if (Ti.App.Properties.getString('receiveNotifications') != 'false') { // TODO revisar este false
-	if (!Ti.App.Properties.getString('notificationCount')) {
-		Ti.App.Properties.setString('notificationCount', 1); // Para que no haga nada la primera vez
+Ti.API.info('Recibir notificación: ' + Ti.App.Properties.getBool('receiveNotifications') + ' ----- ' + Ti.App.Properties.getInt('notificationCount'));
+if (Ti.App.Properties.getBool('receiveNotifications')) {
+	if (!Ti.App.Properties.getInt('notificationCount')) {
+		Ti.App.Properties.setInt('notificationCount', 1); // Para que no haga nada la primera vez
 	} else {
-		var cont = Ti.App.Properties.getString('notificationCount');
+		var cont = Ti.App.Properties.getInt('notificationCount');
 		cont ++;
-		Ti.App.Properties.setString('notificationCount', cont);
+		Ti.App.Properties.setInt('notificationCount', cont);
 		
 		Ti.Android.NotificationManager.notify(cont,
 			Ti.Android.createNotification({
@@ -36,8 +36,7 @@ if (Ti.App.Properties.getString('receiveNotifications') != 'false') { // TODO re
 		if (service) {
 			var serviceIntent = service.getIntent();
 			Ti.API.info('Extra: ' + serviceIntent.getStringExtra('message'));
-			//Ti.Android.stopService(serviceIntent);
+			Ti.Android.stopService(serviceIntent);
 		}
-		
 	}
 }

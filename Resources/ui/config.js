@@ -308,8 +308,8 @@ var label5 = Ti.UI.createLabel({
 	left:10
 });
 		
-if (Ti.App.Properties.getString('newsletter')) {
-	var newsletter = Ti.App.Properties.getString('newsletter');
+if (Ti.App.Properties.getBool('newsletter')) {
+	var newsletter = Ti.App.Properties.getBool('newsletter');
 } else {
 	var newsletter = false;
 }
@@ -322,7 +322,7 @@ var switcher = Ti.UI.createSwitch({
 
 switcher.addEventListener('change', function(e) {
 	if (Ti.App.Properties.getString('email')) {
-		Ti.App.Properties.setString('newsletter', e.value);
+		Ti.App.Properties.setBool('newsletter', e.value);
 	} else {
 		if (e.value) {
 			alert(L('Debes introducir un email real'));
@@ -356,9 +356,9 @@ var label6 = Ti.UI.createLabel({
 	top:12,
 	left:10
 });
-		
-if (Ti.App.Properties.getString('receiveNotifications')) {
-	var notifications = Ti.App.Properties.getString('receiveNotifications');
+
+if (Ti.App.Properties.getBool('receiveNotifications')) {
+	var notifications = Ti.App.Properties.getBool('receiveNotifications');
 } else {
 	var notifications = false;
 }
@@ -371,33 +371,30 @@ var switcher2 = Ti.UI.createSwitch({
 
 switcher2.addEventListener('change', function(e) {
 	if (Ti.App.Properties.getString('formattedDate')) {
-		Ti.App.Properties.setString('receiveNotifications', e.value);
+		Ti.App.Properties.setBool('receiveNotifications', e.value);
 		if (e.value) {
 			if (Ti.Platform.osname == 'android') {
-				Ti.App.Properties.setString('notificationCount', null);
+				Ti.App.Properties.setInt('notificationCount', 0);
 				var fecha = new Date();
 				Ti.API.info('---------------llamo----------------- ' + fecha);
 				var intent = Ti.Android.createServiceIntent({
 					url:'notification.js'
 				});
-				Ti.Android.stopService(intent); // Lo paro antes de volver a arrancarlo
-			
-				intent.putExtra('interval', 10000);
-				intent.putExtra('message', 'this is message');
+				//Ti.Android.stopService(intent); // Lo paro antes de volver a arrancarlo
+				var now = new Date().getTime();
+				var date = new Date(2012, 03, 25, 15, 33, 01).getTime();
+				var newDate = date - now;
+				var newDate = 10000;
+				
+				intent.putExtra('interval', newDate);
+				intent.putExtra('message', 'this is message'); // Pasando parámetros
 				Ti.Android.startService(intent);
 			} else {
 				var newDate = new Date(new Date().getTime() + 5000); // 7 * 24 * 60 * 60 * 1000);
+				newDate = new Date(2012, 03, 25, 17, 20, 01);
 				var notification = Ti.App.iOS.scheduleLocalNotification({
 					alertBody:L('Semana actual de tu embarazo'),
-					alertAction:L('Ver semana 1'),
-					date:newDate,
-					repeat:'daily' // weekly
-				});
-				Ti.App.iOS.cancelAllLocalNotifications();
-				var newDate = new Date(new Date().getTime() + 15000); // 7 * 24 * 60 * 60 * 1000);
-				var notification = Ti.App.iOS.scheduleLocalNotification({
-					alertBody:L('Semana actual de tu embarazo'),
-					alertAction:L('Ver semana 2'),
+					alertAction:L('Ver semana'),
 					date:newDate,
 					repeat:'daily' // weekly
 				});
@@ -448,13 +445,13 @@ deleteDataButton.addEventListener('click', function() {
 	});
 	confirm.show();
 	confirm.addEventListener('click', function(e) {
-		if (e.index === e.cancel || e.cancel === true) {
+		if (e.index === e.cancel || e.cancel === true) { // Comparador iOS y Android
 			return;
 		}
 		Ti.App.Properties.setString('email', null);
 		setDate(null);
-		Ti.App.Properties.setString('newsletter', null);
-		Ti.App.Properties.setString('receiveNotifications', false);
+		Ti.App.Properties.setBool('newsletter', false);
+		Ti.App.Properties.setBool('receiveNotifications', false);
 		label2.text = L('[Seleccionar]');
 		label4.text = L('[Seleccionar]');
 		default_email = L('[Seleccionar]');
