@@ -5,6 +5,9 @@ var self = Titanium.UI.currentWindow;
 self.backgroundColor = '#429BDA';
 self.backgroundImage = '/images/bg.jpg'
 
+/*
+ * Fecha de parto
+ */
 var view = Ti.UI.createView({
 	top:5,
 	backgroundColor:'#FFF',
@@ -183,7 +186,13 @@ view.addEventListener('click', function() {
 		self.add(datePicker);
 	}
 });
+/*
+ * Fin fecha de parto
+ */
 
+/*
+ * Email
+ */
 if (Ti.App.Properties.getString('email')) {
 	var currentEmail = Ti.App.Properties.getString('email');
 	var default_email = null;
@@ -278,7 +287,13 @@ view2.addEventListener('click', function() {
 	dialog2.add(doneButton2);
 	dialog2.add(cancelButton2);
 });
+/*
+ * Fin email
+ */
 
+/*
+ * Recibir newsletter
+ */
 var view3 = Ti.UI.createView({
 	top:107,
 	backgroundColor:'#FFF',
@@ -321,7 +336,103 @@ view3.add(label5);
 
 var timeOut = setTimeout(view3.add(switcher), 500);
 clearTimeout(timeOut);
+/*
+ * Recibir newsletter
+ */
 
+/*
+ * Recibir notificaciones
+ */
+var view4 = Ti.UI.createView({
+	top:158,
+	backgroundColor:'#FFF',
+	height:50,
+	width:'97%'
+});
+
+var label6 = Ti.UI.createLabel({
+	text:L('¿Recibir Notificaciones?'),
+	color:'#000',
+	top:12,
+	left:10
+});
+		
+if (Ti.App.Properties.getString('receiveNotifications')) {
+	var notifications = Ti.App.Properties.getString('receiveNotifications');
+} else {
+	var notifications = false;
+}
+
+var switcher2 = Ti.UI.createSwitch({
+	value:notifications,
+	top:12,
+	right:10
+});
+
+switcher2.addEventListener('change', function(e) {
+	if (Ti.App.Properties.getString('formattedDate')) {
+		Ti.App.Properties.setString('receiveNotifications', e.value);
+		if (e.value) {
+			if (Ti.Platform.osname == 'android') {
+				Ti.App.Properties.setString('notificationCount', null);
+				var fecha = new Date();
+				Ti.API.info('---------------llamo----------------- ' + fecha);
+				var intent = Ti.Android.createServiceIntent({
+					url:'notification.js'
+				});
+				Ti.Android.stopService(intent); // Lo paro antes de volver a arrancarlo
+			
+				intent.putExtra('interval', 10000);
+				intent.putExtra('message', 'this is message');
+				Ti.Android.startService(intent);
+			} else {
+				var newDate = new Date(new Date().getTime() + 5000); // 7 * 24 * 60 * 60 * 1000);
+				var notification = Ti.App.iOS.scheduleLocalNotification({
+					alertBody:L('Semana actual de tu embarazo'),
+					alertAction:L('Ver semana 1'),
+					date:newDate,
+					repeat:'daily' // weekly
+				});
+				Ti.App.iOS.cancelAllLocalNotifications();
+				var newDate = new Date(new Date().getTime() + 15000); // 7 * 24 * 60 * 60 * 1000);
+				var notification = Ti.App.iOS.scheduleLocalNotification({
+					alertBody:L('Semana actual de tu embarazo'),
+					alertAction:L('Ver semana 2'),
+					date:newDate,
+					repeat:'daily' // weekly
+				});
+				//var service = Ti.App.iOS.registerBackgroundService({url:'bg-service.js'})
+			}
+		} else {
+			if (Ti.Platform.osname == 'android') {
+				var intent = Ti.Android.createServiceIntent({
+					url:'notification.js'
+				});
+				Ti.Android.stopService(intent);
+			} else {
+				Ti.App.iOS.cancelAllLocalNotifications(); // no sé si funciona
+			}
+		}
+	} else {
+		if (e.value) {
+			alert(L('Debes introducir una fecha de parto'));
+			switcher2.value = false;
+		}
+	}
+});
+
+self.add(view4);
+view4.add(label6);
+
+var timeOut2 = setTimeout(view4.add(switcher2), 500);
+clearTimeout(timeOut2);
+/*
+ * fin recibir notificaciones
+ */
+
+/*
+ * Botón de borrar
+ */
 var deleteDataButton = Ti.UI.createButton({
 	title:L('Borrar todos los datos'),
 	bottom:30,
@@ -343,6 +454,7 @@ deleteDataButton.addEventListener('click', function() {
 		Ti.App.Properties.setString('email', null);
 		setDate(null);
 		Ti.App.Properties.setString('newsletter', null);
+		Ti.App.Properties.setString('receiveNotifications', false);
 		label2.text = L('[Seleccionar]');
 		label4.text = L('[Seleccionar]');
 		default_email = L('[Seleccionar]');
@@ -351,14 +463,18 @@ deleteDataButton.addEventListener('click', function() {
 });
 
 self.add(deleteDataButton);
+/*
+ * Fin botón de borrar
+ */
 
 
 if (Ti.Platform.osname == 'android') {
-	view.height = view2.height =  view3.height = 70;
+	view.height = view2.height =  view3.height = view4.height = 70;
 	view2.top = 76;
 	view3.top = 147;
-	label1.top = label2.top = label3.top = label4.top = label5.top = 20;
-	switcher.top = 5;
+	view4.top = 218;
+	label1.top = label2.top = label3.top = label4.top = label5.top = label6.top = 20;
+	switcher.top = switcher2.top = 5;
 	deleteDataButton.width = 250;
 }
 
@@ -380,15 +496,4 @@ function transformDate(currentDate) {
 
 function setDate(date) {
 	Ti.App.Properties.setString('formattedDate', date);
-	
-	if (date) {
-		var newDate = new Date(new Date().getTime + 24 * 60 * 60 * 1000); // 7 *
-		var notification = Ti.App.iOS.scheduleLocalNotification({
-			alertBody:L('Semana actual de tu embarazo'),
-			alertAction:L('Ver semana'),
-			date:newDate,
-			repeat:'daily' // weekly
-		});
-	}
-
 }

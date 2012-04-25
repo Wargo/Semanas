@@ -2,34 +2,6 @@ Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
 
-if (Ti.Platform.osname == 'android') {
-	var intent = Ti.Android.createIntent({
-		action:Ti.Android.ACTION_MAIN,
-		//data:'pruebas',
-		//url:'app.js',
-		packageName:Ti.App.id,
-		category:Ti.Android.CATEGORY_LAUNCHER
-	});
-	var pending = Ti.Android.createPendingIntent({
-		activity:Ti.Android.currentActivity,
-		intent:intent,
-		type:Ti.Android.PENDING_INTENT_FOR_ACTIVITY,
-		flags:Ti.Android.FLAG_UPDATE_CURRENT
-	});
-	var notification = Ti.Android.createNotification({
-		icon:0x7f020000,
-		contentTitle:'Nueva Semana',
-		contentText:'bla bla bla blu blu blu',
-		tickerText:L('Nueva notificación...'),
-		contentIntent:pending,
-		when: new Date().getTime() + 120000,
-		//when: 0, // Para que no salga la fecha en la notificación
-	});
-	alert(notification.when)
-	
-	Ti.Android.NotificationManager.notify(1, notification);
-}
-
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
 var local_data = readFile.read();
 data = eval(local_data.text);
@@ -61,6 +33,7 @@ tableData = [];
 index = 0;
 for (i in data) {
 	var row = Ti.UI.createTableViewRow({
+		backgroundColor:'#FFF',
 		height:90,
 		link:data[i].url
 	});
@@ -181,13 +154,16 @@ function goTo() {
 	var diff = date.getTime() - today.getTime();
 	var week = 40 - Math.round(diff/(1000 * 60 * 60 * 24 * 7));
 	
-	if (Ti.Platform.osname == 'android') {
-		tableView.scrollToIndex(getRow(week, data));
-	} else {
-		tableView.scrollToIndex(getRow(week, data), {
-			animated:true,
-			position:Ti.UI.iPhone.TableViewScrollPosition.TOP
-		});
+	
+	if (getRow(week, data)) {
+		if (Ti.Platform.osname == 'android') {
+			tableView.scrollToIndex(getRow(week, data));
+		} else {
+			tableView.scrollToIndex(getRow(week, data), {
+				animated:true,
+				position:Ti.UI.iPhone.TableViewScrollPosition.TOP
+			});
+		}
 	}
 }
 

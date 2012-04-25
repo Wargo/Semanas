@@ -15,6 +15,13 @@
 		leftImage:'data/images/general.gif',
 	},
 	{
+		title:'Il tuo corpo',
+		intro:'Durante la prima settimana di gravidanza non si verificheranno mutamenti evidenti nel tuo fisico. Alcune donne però “percepiscono” di essere incinte poco dopo il concepimento, prima ancora del ritardo mestruale. Sei una di loro?',
+		url:'data/a7.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
+	},
+	{
 		title:'Sviluppo del feto',
 		intro:'La fecondazione è avvenuta e l’uovo fecondato ha preso il nome di zigote.',
 		url:'data/a2.html',
@@ -30,6 +37,13 @@
 		leftImage:'data/images/general.gif',
 	},
 	{
+		title:'Il tuo corpo',
+		intro:'Durante la seconda settimana di gravidanza le tue ovaie hanno cominciato a far maturare un ovocita che è stato espulso nella tuba di Falloppio durante l’ovulazione.',
+		url:'data/a8.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
+	},
+	{
 		title:'Morula e blastocisti',
 		intro:'Lo zigote ha continuato a dividersi fino a trasformarsi in una minuscola pallina solida costituita da 16-32 cellule. Questa pallina, grossa quanto una capocchia di spillo, è denominata morula.',
 		url:'data/a3.html',
@@ -43,5 +57,49 @@
 		url:'data/a6.html',
 		hasChild:true,
 		leftImage:'data/images/general.gif',
+	},
+	{
+		title:'Il tuo corpo',
+		intro:'Se ancora non sai di essere rimasta incinta è probabile che a partire proprio dalla 3ª settimana possa cominciare a sentire i primi sintomi della gravidanza ma non vedrai ancora nessun cambiamento a livello fisico.',
+		url:'data/a9.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
+	},
+	{
+		title:'Il tuo bambino',
+		intro:'La 4ª settimana coincide con con l’arrivo della blastocisti nel tuo utero. È il momento dell’impianto. Il tuo bambino ha già due settimane e misura tra 0,36 e 1 mm dalla testa al sacro.',
+		url:'data/a10.html',
+		hasChild:true,
+		header:'Settimana 4',
+		leftImage:'data/images/bebe.gif',
+	},
+	{
+		title:'Il tuo corpo',
+		intro:'Sai di essere incinta perché il test di gravidanza ti ha dato la conferma. Dentro di te sta succedendo qualcosa di importante. Per i cambiamenti visibili all’esterno dovrai ancora aspettare un po’...',
+		url:'data/a11.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
+	},
+	{
+		title:'Curiosità',
+		intro:'Lo sapevi che l’impianto  della blastocisti fallisce spesso perché l’attacco all’endometrio è un’impresa ardua?',
+		url:'data/a12.html',
+		hasChild:true,
+		leftImage:'data/images/general.gif',
+	},
+	{
+		title:'Il tuo bambino',
+		intro:'Le dimensioni del bambino adesso sono quelle di un seme di sesamo. È come un piccolo girino di essere umano che si può vedere solo al microscopio e ha la forma di un manubrio di ginnastica.',
+		url:'data/a13.html',
+		hasChild:true,
+		header:'Settimana 5',
+		leftImage:'data/images/bebe.gif',
+	},
+	{
+		title:'Il tuo corpo',
+		intro:'Se il ciclo mestruale è saltato e un secondo test di gravidanza conferma che sei in dolce attesa, prendi appuntamento con il medico.',
+		url:'data/a14.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
 	}
-]
+];
