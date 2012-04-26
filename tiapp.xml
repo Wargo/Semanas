@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
+    <property name="acs-oauth-secret-production" type="string">862XjhoGDXXvh9NoCoGhHm2ZsHT0MYe1</property>
+    <property name="acs-oauth-key-production" type="string">z5Hjip98MW3tCBnXbxGKQPtNBRbhoyQC</property>
+    <property name="acs-api-key-production" type="string">hfTxDppc6BmgaMFpWhWl2pu9zKTh1s4i</property>
+    <property name="acs-oauth-secret-development" type="string">xibZXdUIJMBNI3LXEAcNAdxek0HWvF2L</property>
+    <property name="acs-oauth-key-development" type="string">W37Suk7RyBcqXeIZqEwNs04hc34Wgv2h</property>
+    <property name="acs-api-key-development" type="string">wa6CTq2dirU7BBniGd7EjrruB6vakw8I</property>
     <deployment-targets>
         <target device="mobileweb">true</target>
         <target device="iphone">true</target>
@@ -37,7 +43,7 @@
         </orientations>
     </iphone>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
-    	<!--
+        <!--
     	<activities>
 	    	<activity url="app.js">
 	    		<intent-filter>
@@ -48,9 +54,9 @@
 	    	</activity>
 		</activities>
 		-->
-    	<services>
-    		<service type="interval" url="notification.js" />
-    	</services>
+        <services>
+            <service type="interval" url="notification.js"/>
+        </services>
     </android>
     <mobileweb>
         <precache/>
@@ -60,5 +66,7 @@
         </splash>
         <theme>default</theme>
     </mobileweb>
-    <modules/>
+    <modules>
+        <module platform="commonjs" version="2.0.1">ti.cloud</module>
+    </modules>
 </ti:app>

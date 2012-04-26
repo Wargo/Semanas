@@ -11,6 +11,10 @@
  */
 
 //bootstrap and check dependencies
+
+var Cloud = require('ti.cloud');
+Cloud.debug = true;
+
 if (Ti.version < 1.8 ) {
 	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');
 }
@@ -22,4 +26,3 @@ else {
 	var AppTabGroup = require('ui/AppTabGroup');
 	new AppTabGroup().open();
 }
-

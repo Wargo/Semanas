@@ -59,14 +59,17 @@ view.addEventListener('click', function() {
 		formattedDate = transformDate(e.value);
 	});
 	
-	var dialog = Ti.UI.createView({
-		backgroundColor:'#000',
-		opacity:0.8,
-		height:'100%',
-		width:'100%'
+	var dialog = Ti.UI.createWindow({
+		//backgroundColor:'#000',
+		backgroundImage:'/images/bg.jpg',
+		//opacity:0.8,
+		//height:'100%',
+		//width:'100%'
+		//layout:'vertical'
 	});
 	
-	self.add(dialog);
+	//self.add(dialog);
+	Ti.UI.currentTab.open(dialog);
 	
 	var doneButton = Ti.UI.createButton({
 		title:L('Guardar'),
@@ -86,10 +89,12 @@ view.addEventListener('click', function() {
 	});
 	
 	doneButton.addEventListener('click', function(e){
+		dialog.close();
+		/*
 		self.rightNavButton = null;
 		self.remove(dialog);
 		self.remove(datePicker);
-		
+		*/
 		setDate(formattedDate);
 		//Ti.App.Properties.setString('formattedDate', formattedDate);
 		if (formattedDate) {
@@ -115,13 +120,19 @@ view.addEventListener('click', function() {
 	helpButton.addEventListener('click', function() {
 		var helpWindow = Ti.UI.createWindow({
 			title:L('Fecha de parto'),
-			backgroundColor:'#FFF'
+			backgroundImage:'/images/bg.jpg'
 		});
 		var helpText = Ti.UI.createLabel({
 			text:L('Para obtener tu fecha de parto, escribe aquí la fecha de tu última regla'),
 			top:10,
 			left:10,
 			right:10
+		});
+		var helpView = Ti.UI.createView({
+			top:5,
+			backgroundColor:'#FFF',
+			height:100,
+			width:'97%'
 		});
 		var helpPicker = Ti.UI.createPicker({
 			type:Ti.UI.PICKER_TYPE_DATE,
@@ -147,7 +158,8 @@ view.addEventListener('click', function() {
 			helpDate = transformDate(e.value);
 		});
 		
-		helpWindow.add(helpText);
+		helpView.add(helpText);
+		helpWindow.add(helpView);
 		helpWindow.add(helpPicker);
 		Ti.UI.currentTab.open(helpWindow);
 		
@@ -159,32 +171,29 @@ view.addEventListener('click', function() {
 			setDate(formattedDate);
 			//Ti.App.Properties.setString('formattedDate', formattedDate);
 			datePicker.value = helpCurrentDate;  // Esto no va en Android
+			helpWindow.close();
 			
 			if (Ti.Platform.osname == 'android') {
-				self.remove(dialog);
-				
+				dialog.close();
 				showDate = formattedDate.split('-');
 				label2.text = showDate[2] + '/' + showDate[1] + '/' + showDate[0];
 			}
-			helpWindow.close();
 		});
 	});
 	
 	dialog.add(helpButton);
 	
 	if (Ti.Platform.osname == 'android') {
-		helpButton.bottom = 20;
+		//helpButton.bottom = 20;
 		helpButton.height = 50;
-		helpButton.top = null;
 		dialog.add(doneButton);
 		dialog.add(cancelButton);
-		dialog.add(datePicker);
-		self.add(dialog);
-		datePicker.top = '10%';
+		//self.add(dialog);
+		datePicker.bottom = '10%';
 	} else {
-		self.rightNavButton = doneButton;
-		self.add(datePicker);
+		dialog.rightNavButton = doneButton;
 	}
+	dialog.add(datePicker);
 });
 /*
  * Fin fecha de parto
@@ -229,13 +238,12 @@ view2.add(label4);
 self.add(view2);
 
 view2.addEventListener('click', function() {
-	var dialog2 = Ti.UI.createView({
-		backgroundColor:'#000',
-		opacity:0.8,
-		height:'100%',
-		width:'100%'
-	})
-	self.add(dialog2);
+	var dialog2 = Ti.UI.createWindow({
+		title:L('Fecha de parto'),
+		backgroundImage:'/images/bg.jpg'
+	});
+	
+	Ti.UI.currentTab.open(dialog2);
 			
 	var textField = Ti.UI.createTextField({
 		top:'25%',
@@ -277,12 +285,14 @@ view2.addEventListener('click', function() {
 			label4.text = L('[Seleccionar]');
 		}
 		textField.blur();
-		self.remove(dialog2);
+		//self.remove(dialog2);
+		dialog2.close();
 		default_email = null;
 	});	
 	cancelButton2.addEventListener('click', function(e) {
 		textField.blur();
-		self.remove(dialog2);
+		//self.remove(dialog2);
+		dialog2.close();
 	});
 
 	dialog2.add(doneButton2);
@@ -393,14 +403,16 @@ switcher2.addEventListener('change', function(e) {
 				intent.putExtra('message', 'this is message'); // Pasando parámetros
 				Ti.Android.startService(intent);
 			} else {
+				/*
 				var newDate = new Date(2012, 03, 25, 17, 20, 01);
-				newDate = new Date(new Date().getTime() + 15000); // 7 * 24 * 60 * 60 * 1000);
-				var notification = Ti.App.iOS.scheduleLocalNotification({
+				newDate = new Date(new Date().getTime() + 2000); // 7 * 24 * 60 * 60 * 1000);
+				Ti.App.iOS.scheduleLocalNotification({
 					alertBody:L('Semana actual de tu embarazo'),
 					alertAction:L('Ver semana'),
 					date:newDate,
 					//repeat:'daily' // weekly
 				});
+				*/
 				//var service = Ti.App.iOS.registerBackgroundService({url:'bg-service.js'})
 			}
 		} else {
