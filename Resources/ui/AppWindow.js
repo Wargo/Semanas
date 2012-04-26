@@ -2,7 +2,8 @@ function AppWindow(title, url) {
 	var self = Ti.UI.createWindow({
 		title:title,
 		url:url,
-		backgroundColor:'#EDF8F8'
+		backgroundColor:'#EDF8F8',
+		layout:'vertical'
 		//backgroundImage: '/images/embarazo.jpg'
 	});
 	

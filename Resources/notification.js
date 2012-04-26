@@ -17,16 +17,17 @@ if (Ti.App.Properties.getBool('receiveNotifications')) {
 				when: new Date().getTime(),
 				contentIntent:Ti.Android.createPendingIntent({
 					//flags:Ti.Android.FLAG_UPDATE_CURRENT,
-					flags:Ti.Android.FLAG_ACTIVITY_NO_HISTORY,
+					//flags:Ti.Android.FLAG_ACTIVITY_NO_HISTORY,
+					flags:Ti.Android.FLAG_ACTIVITY_NEW_TASK,
 					activity:Ti.Android.currentActivity,
 					type:Ti.Android.PENDING_INTENT_FOR_ACTIVITY,
 					intent:Ti.Android.createIntent({
 						category:Ti.Android.CATEGORY_LAUNCHER,
-						//packageName:Ti.App.id,
+						packageName:Ti.App.id,
 						className:Ti.App.id + '.SemanasActivity',
 						//url:'app.js',
 						action:Ti.Android.ACTION_MAIN,
-						flags:Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_SINGLE_TOP,
+						//flags:Ti.Android.FLAG_ACTIVITY_CLEAR_TOP | Ti.Android.FLAG_ACTIVITY_SINGLE_TOP,
 					})
 				})
 			})

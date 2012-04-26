@@ -3,7 +3,7 @@ Ti.include('/lang.js');
 var self = Titanium.UI.currentWindow;
 
 self.backgroundColor = '#429BDA';
-self.backgroundImage = '/images/bg.jpg'
+self.backgroundImage = '/images/bg.jpg';
 
 /*
  * Fecha de parto
@@ -202,7 +202,8 @@ if (Ti.App.Properties.getString('email')) {
 }
 
 var view2 = Ti.UI.createView({
-	top:56,
+	//top:56,
+	top:1,
 	backgroundColor:'#FFF',
 	height:50,
 	width:'97%'
@@ -295,7 +296,8 @@ view2.addEventListener('click', function() {
  * Recibir newsletter
  */
 var view3 = Ti.UI.createView({
-	top:107,
+	//top:107,
+	top:1,
 	backgroundColor:'#FFF',
 	height:50,
 	width:'97%'
@@ -344,7 +346,8 @@ clearTimeout(timeOut);
  * Recibir notificaciones
  */
 var view4 = Ti.UI.createView({
-	top:158,
+	//top:158,
+	top:1,
 	backgroundColor:'#FFF',
 	height:50,
 	width:'97%'
@@ -390,13 +393,13 @@ switcher2.addEventListener('change', function(e) {
 				intent.putExtra('message', 'this is message'); // Pasando parámetros
 				Ti.Android.startService(intent);
 			} else {
-				var newDate = new Date(new Date().getTime() + 5000); // 7 * 24 * 60 * 60 * 1000);
-				newDate = new Date(2012, 03, 25, 17, 20, 01);
+				var newDate = new Date(2012, 03, 25, 17, 20, 01);
+				newDate = new Date(new Date().getTime() + 15000); // 7 * 24 * 60 * 60 * 1000);
 				var notification = Ti.App.iOS.scheduleLocalNotification({
 					alertBody:L('Semana actual de tu embarazo'),
 					alertAction:L('Ver semana'),
 					date:newDate,
-					repeat:'daily' // weekly
+					//repeat:'daily' // weekly
 				});
 				//var service = Ti.App.iOS.registerBackgroundService({url:'bg-service.js'})
 			}
@@ -432,7 +435,7 @@ clearTimeout(timeOut2);
  */
 var deleteDataButton = Ti.UI.createButton({
 	title:L('Borrar todos los datos'),
-	bottom:30,
+	top:50,
 	cancel:0,
 	width:200
 });
@@ -467,9 +470,9 @@ self.add(deleteDataButton);
 
 if (Ti.Platform.osname == 'android') {
 	view.height = view2.height =  view3.height = view4.height = 70;
-	view2.top = 76;
-	view3.top = 147;
-	view4.top = 218;
+	//view2.top = 76;
+	//view3.top = 147;
+	//view4.top = 218;
 	label1.top = label2.top = label3.top = label4.top = label5.top = label6.top = 20;
 	switcher.top = switcher2.top = 5;
 	deleteDataButton.width = 250;
