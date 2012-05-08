@@ -147,7 +147,7 @@
 		leftImage:'data/images/mama.gif',
 	},
 	{
-		title:'I grandi cambiamenti della mamma',
+		title:'Grandi cambiamenti',
 		intro:'Pensare che dal punto di vista fisico la gravidanza significhi soltanto una pancia che cresce è un errore. Il tuo corpo deve attrezzarsi a “far spazio” al nascituro e questo comporterà una serie di cambiamenti.',
 		url:'data/a21.html',
 		hasChild:true,
