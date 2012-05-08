@@ -1,5 +1,7 @@
 Ti.include('/lang.js');
 
+
+
 var self = Titanium.UI.currentWindow;
 
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
@@ -112,7 +114,7 @@ tableView.addEventListener('click', function(e) {
 });
 
 var todayButton = Ti.UI.createButton({
-	title:L('Hoy'),
+	title:L('Oggi'),
 	style:Ti.UI.iPhone.SystemButton.SAVE
 });
 
@@ -125,7 +127,7 @@ if (Ti.Platform.osname == 'android') {
 		height:60,
 	})
 	var text = Ti.UI.createLabel({
-		text:L('Acceder a la semana actual'),
+		text:L('Vai alla tua settimana'),
 		color:'#FFF'
 	})
 	todayButton.add(text);
@@ -138,7 +140,12 @@ todayButton.addEventListener('click', function() {
 	if (Ti.App.Properties.getString('formattedDate')) {
 		goTo();
 	} else {
-		alert(L('Necesitas introducir tu fecha de parto'));
+		var alert = Ti.UI.createAlertDialog({
+			title:L('Errore'),
+			message:L('Devi introdurre una data di parto'),
+			ok:'Ok'
+		});
+		alert.show();
 	}
 });
 

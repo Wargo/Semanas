@@ -1,7 +1,7 @@
 Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
-
+		
 self.backgroundColor = '#429BDA';
 self.backgroundImage = '/images/bg.jpg';
 
@@ -16,14 +16,14 @@ var view = Ti.UI.createView({
 });
 
 var label1 = Ti.UI.createLabel({
-	text:L('Fecha de parto'),
+	text:L('Data di parto'),
 	color:'#000',
 	top:12,
 	left:10
 });
 
 var label2 = Ti.UI.createLabel({
-	text:'[Seleccionar]',
+	text:'[Vai]',
 	color:'#ff0000',
 	top:12,
 	right:10
@@ -81,7 +81,7 @@ view.addEventListener('click', function() {
 	});
 	
 	var cancelButton = Ti.UI.createButton({
-		title:L('Cancelar'),
+		title:L('Cancellare'),
 		right:'15%',
 		width:'30%',
 		top: '50%',
@@ -110,7 +110,7 @@ view.addEventListener('click', function() {
 	});
 	
 	var helpButton = Ti.UI.createButton({
-		title:L('¿No conoces tu fecha de parto?'),
+		title:L('¿Non conosci la tua data di parto?'),
 		width:'80%',
 		height:40,
 		top:20,
@@ -119,11 +119,11 @@ view.addEventListener('click', function() {
 	
 	helpButton.addEventListener('click', function() {
 		var helpWindow = Ti.UI.createWindow({
-			title:L('Fecha de parto'),
+			title:L('Data di parto'),
 			backgroundImage:'/images/bg.jpg'
 		});
 		var helpText = Ti.UI.createLabel({
-			text:L('Para obtener tu fecha de parto, escribe aquí la fecha de tu última regla'),
+			text:L('Inserisci il primo giorno dell\'ultima mestruazione'),
 			top:10,
 			left:10,
 			right:10
@@ -206,7 +206,7 @@ if (Ti.App.Properties.getString('email')) {
 	var currentEmail = Ti.App.Properties.getString('email');
 	var default_email = null;
 } else {
-	var currentEmail = L('[Seleccionar]');
+	var currentEmail = L('[Vai]');
 	var default_email = currentEmail;
 }
 
@@ -219,7 +219,7 @@ var view2 = Ti.UI.createView({
 });
 
 var label3 = Ti.UI.createLabel({
-	text:L('Email'),
+	text:L('E-mail'),
 	color:'#000',
 	top:12,
 	left:10
@@ -239,7 +239,7 @@ self.add(view2);
 
 view2.addEventListener('click', function() {
 	var dialog2 = Ti.UI.createWindow({
-		title:L('Fecha de parto'),
+		title:L('Data di parto'),
 		backgroundImage:'/images/bg.jpg'
 	});
 	
@@ -265,13 +265,13 @@ view2.addEventListener('click', function() {
 	}
 
 	var doneButton2 = Ti.UI.createButton({
-		title:L('Guardar'),
+		title:L('Salvare'),
 		left:'15%',
 		width:'30%',
 		top:'40%'
 	});
 	var cancelButton2 = Ti.UI.createButton({
-		title:L('Cancelar'),
+		title:L('Cancellare'),
 		right:'15%',
 		width:'30%',
 		top:'40%'
@@ -282,7 +282,7 @@ view2.addEventListener('click', function() {
 		if (textField.value) {
 			label4.text = textField.value;
 		} else {
-			label4.text = L('[Seleccionar]');
+			label4.text = L('[Vai]');
 		}
 		textField.blur();
 		//self.remove(dialog2);
@@ -314,7 +314,7 @@ var view3 = Ti.UI.createView({
 });
 
 var label5 = Ti.UI.createLabel({
-	text:L('¿Recibir Newsletter?'),
+	text:L('Ricevi la Newsletter?'),
 	color:'#000',
 	top:12,
 	left:10
@@ -335,9 +335,15 @@ var switcher = Ti.UI.createSwitch({
 switcher.addEventListener('change', function(e) {
 	if (Ti.App.Properties.getString('email')) {
 		Ti.App.Properties.setBool('newsletter', e.value);
+		saveRemote(Ti.App.Properties.getString('email'), e.value);
 	} else {
 		if (e.value) {
-			alert(L('Debes introducir un email real'));
+			var alert = Ti.UI.createAlertDialog({
+				title:L('Errore'),
+				message:L('Devi introdurre un indirizzo mail'),
+				ok:'Ok'
+			});
+			alert.show();
 			switcher.value = false;
 		}
 	}
@@ -364,7 +370,7 @@ var view4 = Ti.UI.createView({
 });
 
 var label6 = Ti.UI.createLabel({
-	text:L('¿Recibir Notificaciones?'),
+	text:L('Ricevi Notifiche?'),
 	color:'#000',
 	top:12,
 	left:10
@@ -387,6 +393,7 @@ switcher2.addEventListener('change', function(e) {
 		Ti.App.Properties.setBool('receiveNotifications', e.value);
 		if (e.value) {
 			if (Ti.Platform.osname == 'android') {
+				/*
 				Ti.App.Properties.setInt('notificationCount', 0);
 				var fecha = new Date();
 				Ti.API.info('---------------llamo----------------- ' + fecha);
@@ -402,6 +409,7 @@ switcher2.addEventListener('change', function(e) {
 				intent.putExtra('interval', newDate);
 				intent.putExtra('message', 'this is message'); // Pasando parámetros
 				Ti.Android.startService(intent);
+				*/
 			} else {
 				/*
 				var newDate = new Date(2012, 03, 25, 17, 20, 01);
@@ -427,13 +435,18 @@ switcher2.addEventListener('change', function(e) {
 		}
 	} else {
 		if (e.value) {
-			alert(L('Debes introducir una fecha de parto'));
+			var alert = Ti.UI.createAlertDialog({
+				title:L('Errore'),
+				message:L('Devi introdurre una data di parto'),
+				ok:'Ok'
+			});
+			alert.show();
 			switcher2.value = false;
 		}
 	}
 });
 
-self.add(view4);
+//self.add(view4);
 view4.add(label6);
 
 var timeOut2 = setTimeout(view4.add(switcher2), 500);
@@ -446,7 +459,7 @@ clearTimeout(timeOut2);
  * Botón de borrar
  */
 var deleteDataButton = Ti.UI.createButton({
-	title:L('Borrar todos los datos'),
+	title:L('Eliminare tutti i dati'),
 	top:50,
 	cancel:0,
 	width:200
@@ -454,22 +467,24 @@ var deleteDataButton = Ti.UI.createButton({
 
 deleteDataButton.addEventListener('click', function() {
 	var confirm = Ti.UI.createAlertDialog({
-		buttonNames: [L('Cancelar'),L('Aceptar')],
-		cancel:0,
-		title:L('¿Seguro?')
+		buttonNames: [L('Sì'),L('No')],
+		cancel:1,
+		title:L('Conferma'),
+		message:L('Sei sicura di voler eliminare tutto?')
 	});
 	confirm.show();
 	confirm.addEventListener('click', function(e) {
 		if (e.index === e.cancel || e.cancel === true) { // Comparador iOS y Android
 			return;
 		}
+		saveRemote(Ti.App.Properties.getString('email'), false);
 		Ti.App.Properties.setString('email', null);
 		setDate(null);
 		Ti.App.Properties.setBool('newsletter', false);
 		Ti.App.Properties.setBool('receiveNotifications', false);
-		label2.text = L('[Seleccionar]');
-		label4.text = L('[Seleccionar]');
-		default_email = L('[Seleccionar]');
+		label2.text = L('[Vai]');
+		label4.text = L('[Vai]');
+		default_email = L('[Vai]');
 		switcher.value = false;
 	});
 });
@@ -508,4 +523,19 @@ function transformDate(currentDate) {
 
 function setDate(date) {
 	Ti.App.Properties.setString('formattedDate', date);
+}
+
+function saveRemote(email, active) {
+	var url = 'http://www.lagravidanza.net/email.php';
+	var client = Ti.Network.createHTTPClient({
+		onload: function(e) {
+			Ti.API.info('email guardado');
+		},
+		onerror: function(e) {
+			Ti.API.info('error guardando el email');
+		},
+		timeout: 5000
+	});
+	client.open('POST', url);
+	client.send({_save_email:email,_save_active:active});
 }
