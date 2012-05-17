@@ -1,7 +1,5 @@
 Ti.include('/lang.js');
 
-
-
 var self = Titanium.UI.currentWindow;
 
 var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
@@ -125,11 +123,11 @@ if (Ti.Platform.osname == 'android') {
 		bottom:0,
 		width:'100%',
 		height:60,
-	})
+	});
 	var text = Ti.UI.createLabel({
 		text:L('Vai alla tua settimana'),
 		color:'#FFF'
-	})
+	});
 	todayButton.add(text);
 	self.add(todayButton);
 } else {
@@ -160,7 +158,6 @@ function goTo() {
 	date = new Date(date[0], date[1] - 1, date[2]);
 	var diff = date.getTime() - today.getTime();
 	var week = 40 - Math.round(diff/(1000 * 60 * 60 * 24 * 7));
-	
 	
 	if (getRow(week, data)) {
 		if (Ti.Platform.osname == 'android') {
