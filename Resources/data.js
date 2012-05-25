@@ -1,4 +1,4 @@
-[
+var data = [
 	{
 		title:'Concepimento',
 		intro:'La tua gravidanza ha avuto inizio con il concepimento, quando uno spermatozoo è riuscito a fecondare il tuo ovulo.',
@@ -402,5 +402,12 @@
 		hasChild:true,
 		header:'Settimana 19',
 		leftImage:'data/images/bebe.gif',
+	},
+	{
+		title:'Il tuo corpo',
+		intro:'Sei alla 19ª settimana di gravidanza. Sei elettrizzata! L’hai sentito muoversi! Sono passate solo tre settimane da quando scalciava ma non potevi sentirlo.',
+		url:'data/a56.html',
+		hasChild:true,
+		leftImage:'data/images/mama.gif',
 	},
 ];

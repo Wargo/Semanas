@@ -15,14 +15,17 @@ function AppTabGroup() {
 	
 	var tab1 = Ti.UI.createTab({
 		title: L('Settimane'),
-		icon: '/images/KS_nav_ui.png',
+		icon: '/images/calendar.png',
+		//icon: Ti.UI.iPhone.SystemIcon.OPTIONS,
 		window: win1
 	});
 	win1.containingTab = tab1;
 	
+	
 	var tab4 = Ti.UI.createTab({
+		icon: '/images/spanner.png',
+		//icon: Ti.UI.iPhone.SystemIcon.CALENDAR,
 		title: L('Configurazione'),
-		icon: '/images/KS_nav_ui.png',
 		window: win4
 	});
 	win4.containingTab = tab4;

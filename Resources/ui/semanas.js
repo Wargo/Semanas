@@ -2,9 +2,13 @@ Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
 
-var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
-var local_data = readFile.read();
-data = eval(local_data.text);
+//var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
+//var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, 'data.js');
+//var local_data = readFile.read();
+
+//data = eval(local_data.text);
+
+Ti.include('/data.js');
 
 /*
 data = [];
@@ -93,12 +97,87 @@ var tableView = Ti.UI.createTableView({
 self.add(tableView);
 
 tableView.addEventListener('click', function(e) {
+	var current = e.index;
+	open_window(current, data, false);
+});
+
+function open_window (current, data, self) {
 	var webview = Ti.UI.createWebView({
-		url:e.rowData.link
+		//url:e.rowData.link
+		url: data[current].url
 	});
 	var win = Ti.UI.createWindow();
+	var settimana = Math.ceil((current + 1) / 3); // TODO ese número 3 es dinámico, artículos por semana
+	//win.title = 'Sett. ' + settimana + ': ' + data[current].title;
+	win.title = 'Settimana ' + settimana;
+	
+	var paging = Ti.UI.createButtonBar({
+		style:Ti.UI.iPhone.SystemButtonStyle.BAR,
+		//style:2,
+		labels:[{title:'<', enabled:true}, {title:'>', enabled:true}]
+	});
+	win.rightNavButton = paging;
+	
+	
+	/*
+	var back = Ti.UI.createButton({
+		title:'Semanas'
+	})
+	win.leftNavButton = back;
+	
+	back.addEventListener('click', function(e) {
+		win.close();
+	});
+	*/
+	
+	paging.addEventListener('click', function(e) {
+		if (e.index === 1) { // next
+			open_window(current + 1, data, win);
+		} else if(e.index === 0) { // back
+			open_window(current - 1, data, win);
+		}
+	});
+	
 	win.add(webview);
-	Ti.UI.currentTab.open(win);
+	
+	if (self) {
+		/*
+		setTimeout(function() {
+			//self.close();
+			Ti.UI.currentTab.close(self, {animated: false});
+		}, 300);
+		*/
+		
+		var disappear = Ti.UI.createAnimation({
+			//top:400,
+			opacity:0,
+			//transition: Ti.UI.iPhone.AnimationStyle.CURL_UP,
+			//transform: win,
+			duration:200
+		});
+		self.animate(disappear);
+		disappear.addEventListener('complete', function() {
+			Ti.UI.currentTab.close(self, {animated: false});
+			win.opacity = 0;
+			Ti.UI.currentTab.open(win, {animated: false});
+			var appear = Ti.UI.createAnimation({
+				opacity:1,
+				duration:300
+			});
+			win.animate(appear);
+		});
+	} else {
+		Ti.UI.currentTab.open(win, {
+			//animation: Ti.UI.iPhone.AnimationStyle.CURL_UP
+			animated: true
+		})
+	}
+	if (current == 0) {
+		paging.labels = [{title:'<', enabled:false}, {title:'>', enabled:true}];
+	} else if (current == 120) { // TODO ese número es dinámico (total de artículos)
+		paging.labels = [{title:'<', enabled:true}, {title:'>', enabled:false}];
+	}
+	
 	Ti.App.addEventListener('printStyles', function(e) {
 		var styles = '';
 		if (Ti.Platform.osname == 'android') {
@@ -109,7 +188,7 @@ tableView.addEventListener('click', function(e) {
 		
 		webview.evalJS('showCss("' + styles + '");');
 	});
-});
+};
 
 var todayButton = Ti.UI.createButton({
 	title:L('Oggi'),
