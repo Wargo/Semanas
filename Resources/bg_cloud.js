@@ -1,5 +1,5 @@
 var Cloud 			= require('ti.cloud');
-var trace 			= Ti.API.info;
+//var trace 			= Ti.API.info;
 var user_device_token 	= Ti.App.Properties.getString("device_token",null);
 
 //getDeviceToken();
@@ -9,9 +9,9 @@ var user_device_token 	= Ti.App.Properties.getString("device_token",null);
 
 //REGISTER USER ON CLOUD
 function registerUser(){
-	trace("REGISTER");
+	//trace("REGISTER");
 	Cloud.Users.create({
-	    username: "new_username", //_" + Math.floor((Math.random() * 100) + 1),
+	    username: "new_username_" + Ti.Platform.name, //_" + Math.floor((Math.random() * 100) + 1),
 	    password: "new_password",
 	    password_confirmation: "new_password",
 	    first_name: "Firstname",
@@ -31,7 +31,7 @@ function registerUser(){
 //LOGIN TO CLOUD AS A USER THAT WE CREATED BEFORE
 function login(){
 	Cloud.Users.login({
-	    login: 'new_username',
+	    login: 'new_username_' + Ti.Platform.name,
 	    password: 'new_password'
 	}, function (e) {
 	    if (e.success) {
@@ -50,35 +50,59 @@ function login(){
 }
 //REGISTER LOCAL PUSH NOTIFICATION HERE
 function getDeviceToken(tabs){
-	trace("REGISTERING LOCAL PUSH");
-	Titanium.Network.registerForPushNotifications({
-	    types: [
-	        Titanium.Network.NOTIFICATION_TYPE_BADGE,
-	        Titanium.Network.NOTIFICATION_TYPE_ALERT,
-	        Titanium.Network.NOTIFICATION_TYPE_SOUND
-	    ],
-	    success:function(e) {
-	        user_device_token = e.deviceToken;
-	        Ti.App.Properties.setString("device_token",user_device_token);
-			//alert("Device token received "+user_device_token);
-			registerUser();
-	    },
-	    error:function(e) {
-	        //alert("Error during registration: "+e.error);
-	    },
-	    callback:function(e) {
-	        // called when a push notification is received.
-	        //alert("Received a push notification\n\nPayload:\n\n"+JSON.stringify(e.data));
-			Ti.UI.iPhone.appBadge = 0;
-			
-	        tabs.setActiveTab(0);
-	        /*
-            if (Ti.App.Properties.getString('formattedDate')) {
-				goTo();
-			}
-			*/
-	    }
-	});
+	if (Ti.Platform.osname == 'android') {
+		var CloudPush = require('ti.cloudpush');
+		CloudPush.retrieveDeviceToken({
+	        success: function deviceTokenSuccess(e) {
+	            user_device_token = e.deviceToken;
+		        Ti.App.Properties.setString("device_token",user_device_token);
+		        alert(user_device_token);
+		        registerUser();
+	        },
+	        error: function deviceTokenError(e) {
+	        	alert(e);
+	        }
+	    });
+	    CloudPush.addEventListener('callback', function (evt) {
+	        alert(evt.payload);
+	        alert('callback');
+	    });
+	    CloudPush.addEventListener('trayClickLaunchedApp', function (evt) {
+	        Ti.API.info('Tray Click Launched App (app was not running)');
+	    });
+	    CloudPush.addEventListener('trayClickFocusedApp', function (evt) {
+	        Ti.API.info('Tray Click Focused App (app was already running)');
+	    });
+	} else {
+		Titanium.Network.registerForPushNotifications({
+		    types: [
+		        Titanium.Network.NOTIFICATION_TYPE_BADGE,
+		        Titanium.Network.NOTIFICATION_TYPE_ALERT,
+		        Titanium.Network.NOTIFICATION_TYPE_SOUND
+		    ],
+		    success:function(e) {
+		        user_device_token = e.deviceToken;
+		        Ti.App.Properties.setString("device_token",user_device_token);
+				//alert("Device token received "+user_device_token);
+				registerUser();
+		    },
+		    error:function(e) {
+		        //alert("Error during registration: "+e.error);
+		    },
+		    callback:function(e) {
+		        // called when a push notification is received.
+		        //alert("Received a push notification\n\nPayload:\n\n"+JSON.stringify(e.data));
+				Ti.UI.iPhone.appBadge = 0;
+				
+		        tabs.setActiveTab(0);
+		        /*
+	            if (Ti.App.Properties.getString('formattedDate')) {
+					goTo();
+				}
+				*/
+		    }
+		});
+	}
 }
 //alert(Ti.UI.iPhone.appBadge);
 
@@ -86,7 +110,7 @@ function getDeviceToken(tabs){
 function subscribeToServerPush(){
 	Cloud.PushNotifications.subscribe({
     	channel: 'friend_request',
-    	type:'ios',
+    	type: Ti.Platform.name === 'android' ? 'android' : 'ios',
     	device_token: user_device_token
 	}, function (e) {
 	    if (e.success) {

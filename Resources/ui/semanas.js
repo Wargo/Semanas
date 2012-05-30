@@ -115,7 +115,7 @@ function open_window (current, data, self) {
 	var paging = Ti.UI.createButtonBar({
 		style:Ti.UI.iPhone.SystemButtonStyle.BAR,
 		//style:2,
-		labels:[{title:'<', enabled:true}, {title:'>', enabled:true}]
+		labels:[{title:' < ', enabled:true}, {title:' > ', enabled:true}]
 	});
 	win.rightNavButton = paging;
 	
@@ -158,7 +158,6 @@ function open_window (current, data, self) {
 		});
 		self.animate(disappear);
 		disappear.addEventListener('complete', function() {
-			Ti.UI.currentTab.close(self, {animated: false});
 			win.opacity = 0;
 			Ti.UI.currentTab.open(win, {animated: false});
 			var appear = Ti.UI.createAnimation({
@@ -166,6 +165,9 @@ function open_window (current, data, self) {
 				duration:300
 			});
 			win.animate(appear);
+			appear.addEventListener('complete', function() {
+				Ti.UI.currentTab.close(self, {animated: false});
+			})
 		});
 	} else {
 		Ti.UI.currentTab.open(win, {
@@ -173,11 +175,14 @@ function open_window (current, data, self) {
 			animated: true
 		})
 	}
-	if (current == 0) {
-		paging.labels = [{title:'<', enabled:false}, {title:'>', enabled:true}];
-	} else if (current == 120) { // TODO ese número es dinámico (total de artículos)
-		paging.labels = [{title:'<', enabled:true}, {title:'>', enabled:false}];
-	}
+	
+	setTimeout(function() {
+		if (current <= 0) {
+			paging.labels = [{title:' < ', enabled:false}, {title:' > ', enabled:true}];
+		} else if (current >= 119) { // TODO ese número es dinámico (total de artículos)
+			paging.labels = [{title:' < ', enabled:true}, {title:' > ', enabled:false}];
+		}
+	}, 500);
 	
 	Ti.App.addEventListener('printStyles', function(e) {
 		var styles = '';
