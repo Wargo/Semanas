@@ -10,6 +10,7 @@ function AppTabGroup() {
 	//create app tabs
 	var win1 = new AppWindow(L('Settimane'), 'ui/semanas.js', null),
 		win4 = new AppWindow(L('Configurazione'), 'ui/config.js', 'vertical'),
+		win5 = new AppWindow(L('Cloud'), 'ui/cloud.js', 'vertical'),
 		win2 = new AppWindow(L('Fecha Parto'), 'ui/fecha.js'),
 		win3 = new AppWindow(L('Newsletter'), 'ui/newsletter.js');
 	
@@ -20,6 +21,15 @@ function AppTabGroup() {
 		window: win1
 	});
 	win1.containingTab = tab1;
+	
+	
+	var tab5 = Ti.UI.createTab({
+		title: L('Cloud'),
+		icon: '/images/KS_nav_ui.png',
+		//icon: Ti.UI.iPhone.SystemIcon.OPTIONS,
+		window: win5
+	});
+	win5.containingTab = tab5;
 	
 	
 	var tab4 = Ti.UI.createTab({
@@ -48,6 +58,10 @@ function AppTabGroup() {
 	//self.addTab(tab2);
 	//self.addTab(tab3);
 	self.addTab(tab4);
+	//self.addTab(tab5);
+	
+	Ti.include('/bg_cloud.js');
+	getDeviceToken(self);
 	
 	return self;
 };

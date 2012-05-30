@@ -412,8 +412,9 @@ switcher2.addEventListener('change', function(e) {
 				*/
 			} else {
 				/*
+				Esto no termina de funcionar
 				var newDate = new Date(2012, 03, 25, 17, 20, 01);
-				newDate = new Date(new Date().getTime() + 2000); // 7 * 24 * 60 * 60 * 1000);
+				newDate = new Date(new Date().getTime() + 5000); // 7 * 24 * 60 * 60 * 1000);
 				Ti.App.iOS.scheduleLocalNotification({
 					alertBody:L('Semana actual de tu embarazo'),
 					alertAction:L('Ver semana'),
@@ -421,7 +422,10 @@ switcher2.addEventListener('change', function(e) {
 					//repeat:'daily' // weekly
 				});
 				*/
-				//var service = Ti.App.iOS.registerBackgroundService({url:'bg-service.js'})
+				/*
+				 * Esto lo pondré cuando se guarde la fecha
+				 * var service = Ti.App.iOS.registerBackgroundService({url:'bg-service.js'})
+				 */
 			}
 		} else {
 			if (Ti.Platform.osname == 'android') {
@@ -430,7 +434,7 @@ switcher2.addEventListener('change', function(e) {
 				});
 				Ti.Android.stopService(intent);
 			} else {
-				Ti.App.iOS.cancelAllLocalNotifications(); // no sé si funciona
+				// no lo he puesto dentro del bg-service
 			}
 		}
 	} else {
@@ -446,7 +450,7 @@ switcher2.addEventListener('change', function(e) {
 	}
 });
 
-//self.add(view4);
+self.add(view4);
 view4.add(label6);
 
 var timeOut2 = setTimeout(view4.add(switcher2), 500);
@@ -486,6 +490,7 @@ deleteDataButton.addEventListener('click', function() {
 		label4.text = L('[Vai]');
 		default_email = L('[Vai]');
 		switcher.value = false;
+		switcher2.value = false;
 	});
 });
 
@@ -523,6 +528,7 @@ function transformDate(currentDate) {
 
 function setDate(date) {
 	Ti.App.Properties.setString('formattedDate', date);
+	//Ti.App.iOS.registerBackgroundService({url:'bg-service.js'});
 }
 
 function saveRemote(email, active) {

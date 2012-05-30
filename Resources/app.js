@@ -73,11 +73,101 @@ c2dm.register(senderId, {
 */
 
 
+/*
+var Cloud = require('ti.cloud');
+Cloud.debug = true;  // optional; if you add this line, set it to false for production
+
+// example assumes you have a set of text fields named username, password, etc.
+Cloud.Users.create({
+    username: 'ana',
+    password: 'password',
+    password_confirmation: 'password',
+    first_name: 'nombre',
+    last_name: 'appellido'
+}, function (e) {
+    if (e.success) {
+		// user created successfully
+		Ti.API.info('usuario creado');
+    } else {
+        // oops, something went wrong
+		Ti.API.info('usuario no creado');
+    }
+});
+
+var deviceToken;
+if (Ti.Platform.osname == 'android') {
+	var CloudPush = require('ti.cloudpush');
+	CloudPush.retrieveDeviceToken({
+	    success: function deviceTokenSuccess(e) {
+	        //alert('Device Token: ' + e.deviceToken);
+	        deviceToken = e.deviceToken;
+	    },
+	    error: function deviceTokenError(e) {
+	        //alert('Failed to register for push! ' + e.error);
+	    }
+	});
+} else {
+	Titanium.Network.registerForPushNotifications({
+		types: [
+			Titanium.Network.NOTIFICATION_TYPE_BADGE,
+			Titanium.Network.NOTIFICATION_TYPE_ALERT,
+			Titanium.Network.NOTIFICATION_TYPE_SOUND
+		],
+		success:function(e) {
+			deviceToken = e.deviceToken;
+			alert("Device token received " + deviceToken);
+		},
+		error:function(e) {
+			alert("Error during registration: " + e.error);
+		},
+		callback:function(e) {
+			// called when a push notification is received.
+			alert("Received a push notification\n\nPayload:\n\n" + JSON.stringify(e.data));
+		}
+	});
+}
+
+Cloud.PushNotifications.subscribe({
+    channel: 'canal',
+    device_token: deviceToken, //'f7702d77b34ed94869f664e7a297ccc173bec93a2b815css6asd28461a0358db',
+    type: Ti.Platform.name === 'iPhone OS' ? 'ios' : Ti.Platform.name
+}, function (e) {
+    if (e.success) {
+        channel.value = '';
+        alert('Subscribed!');
+    } else {
+        error(e);
+    }
+});
+
+
+/*
+
+var sdk = new Cocoafish('wa6CTq2dirU7BBniGd7EjrruB6vakw8I');  // app key
+var data = {
+	type: 'ios',
+	channel: 'friend_request',
+	device_token: 'f7702d77b34ed94869f664e7a297ccc173bec93a2b815css6asd28461a0358db'
+};
+sdk.sendRequest('https://api.cloud.appcelerator.com/v1/push_notification/subscribe.json', 'POST', data, callback);
+
+//SDK Callback:
+
+function callback(data) {
+  if(data) {
+    if(data.meta) {
+      var meta = data.meta;
+      if(meta.status == 'ok' 
+		&& meta.code == 200 
+		&& meta.method_name == 'SubscribeNotification') {
+			alert('hola?');
+      }
+    }
+  }
+}
+*/
 
 //bootstrap and check dependencies
-
-var Cloud = require('ti.cloud');
-Cloud.debug = true;
 
 if (Ti.version < 1.8 ) {
 	alert('Sorry - this application template requires Titanium Mobile SDK 1.8 or later');
