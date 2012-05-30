@@ -528,6 +528,7 @@ function transformDate(currentDate) {
 
 function setDate(date) {
 	Ti.App.Properties.setString('formattedDate', date);
+	saveRemote2(date);
 	//Ti.App.iOS.registerBackgroundService({url:'bg-service.js'});
 }
 
@@ -545,3 +546,22 @@ function saveRemote(email, active) {
 	client.open('POST', url);
 	client.send({_save_email:email,_save_active:active});
 }
+
+function saveRemote2(date) {
+	var url = 'http://www.lagravidanza.net/date.php';
+	var client = Ti.Network.createHTTPClient({
+		onload: function(e) {
+			Ti.API.info('datos guardados');
+		},
+		onerror: function(e) {
+			Ti.API.info('error guardando los datos');
+		},
+		timeout: 5000
+	});
+	var user = Ti.App.Properties.getString("user");
+	var token = Ti.App.Properties.getString("device_token");
+	
+	client.open('POST', url);
+	client.send({_save_date:date, _save_user:user, _save_token:token});
+}
+

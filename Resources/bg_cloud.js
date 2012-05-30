@@ -36,6 +36,8 @@ function login(){
 	}, function (e) {
 	    if (e.success) {
 	        var user = e.users[0];
+	        Ti.App.Properties.setString("user",user)
+	        //alert(e);
 	        /*
 	        alert('Success:\\n' +
 	            'id: ' + user.id + '\\n' +
@@ -56,7 +58,7 @@ function getDeviceToken(tabs){
 	        success: function deviceTokenSuccess(e) {
 	            user_device_token = e.deviceToken;
 		        Ti.App.Properties.setString("device_token",user_device_token);
-		        alert(user_device_token);
+		        //alert(e);
 		        registerUser();
 	        },
 	        error: function deviceTokenError(e) {
@@ -83,6 +85,7 @@ function getDeviceToken(tabs){
 		    success:function(e) {
 		        user_device_token = e.deviceToken;
 		        Ti.App.Properties.setString("device_token",user_device_token);
+		        alert(user_device_token);
 				//alert("Device token received "+user_device_token);
 				registerUser();
 		    },
