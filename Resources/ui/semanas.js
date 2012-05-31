@@ -1,7 +1,7 @@
 Ti.include('/lang.js');
 
 var self = Titanium.UI.currentWindow;
-self.barImage = '/images/bg.jpg';
+//self.barImage = '/images/bg.jpg';
 
 //var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.resourcesDirectory, 'data.js');
 //var readFile = Titanium.Filesystem.getFile(Titanium.Filesystem.applicationDataDirectory, 'data.js');

@@ -35,7 +35,7 @@ function login(){
 	    password: 'new_password'
 	}, function (e) {
 	    if (e.success) {
-	        var user = e.users[0];
+	        var user = e.users[0].id;
 	        Ti.App.Properties.setString("user",user)
 	        //alert(e);
 	        /*
@@ -85,7 +85,6 @@ function getDeviceToken(tabs){
 		    success:function(e) {
 		        user_device_token = e.deviceToken;
 		        Ti.App.Properties.setString("device_token",user_device_token);
-		        alert(user_device_token);
 				//alert("Device token received "+user_device_token);
 				registerUser();
 		    },

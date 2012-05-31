@@ -279,6 +279,7 @@ view2.addEventListener('click', function() {
 	
 	doneButton2.addEventListener('click', function(e) {
 		Ti.App.Properties.setString('email', textField.value);
+		saveRemote();
 		if (textField.value) {
 			label4.text = textField.value;
 		} else {
@@ -335,7 +336,7 @@ var switcher = Ti.UI.createSwitch({
 switcher.addEventListener('change', function(e) {
 	if (Ti.App.Properties.getString('email')) {
 		Ti.App.Properties.setBool('newsletter', e.value);
-		saveRemote(Ti.App.Properties.getString('email'), e.value);
+		saveRemote();
 	} else {
 		if (e.value) {
 			var alert = Ti.UI.createAlertDialog({
@@ -391,6 +392,7 @@ var switcher2 = Ti.UI.createSwitch({
 switcher2.addEventListener('change', function(e) {
 	if (Ti.App.Properties.getString('formattedDate')) {
 		Ti.App.Properties.setBool('receiveNotifications', e.value);
+		saveRemote();
 		if (e.value) {
 			if (Ti.Platform.osname == 'android') {
 				/*
@@ -481,7 +483,6 @@ deleteDataButton.addEventListener('click', function() {
 		if (e.index === e.cancel || e.cancel === true) { // Comparador iOS y Android
 			return;
 		}
-		saveRemote(Ti.App.Properties.getString('email'), false);
 		Ti.App.Properties.setString('email', null);
 		setDate(null);
 		Ti.App.Properties.setBool('newsletter', false);
@@ -491,6 +492,10 @@ deleteDataButton.addEventListener('click', function() {
 		default_email = L('[Vai]');
 		switcher.value = false;
 		switcher2.value = false;
+		
+		setTimeout(function() {
+			saveRemote();
+		}, 500);
 	});
 });
 
@@ -528,40 +533,35 @@ function transformDate(currentDate) {
 
 function setDate(date) {
 	Ti.App.Properties.setString('formattedDate', date);
-	saveRemote2(date);
+	saveRemote();
 	//Ti.App.iOS.registerBackgroundService({url:'bg-service.js'});
 }
 
-function saveRemote(email, active) {
-	var url = 'http://www.lagravidanza.net/email.php';
-	var client = Ti.Network.createHTTPClient({
-		onload: function(e) {
-			Ti.API.info('email guardado');
-		},
-		onerror: function(e) {
-			Ti.API.info('error guardando el email');
-		},
-		timeout: 5000
-	});
-	client.open('POST', url);
-	client.send({_save_email:email,_save_active:active});
-}
-
-function saveRemote2(date) {
-	var url = 'http://www.lagravidanza.net/date.php';
+function saveRemote() {
+	var url = 'http://www.lagravidanza.net/app.php';
 	var client = Ti.Network.createHTTPClient({
 		onload: function(e) {
 			Ti.API.info('datos guardados');
 		},
 		onerror: function(e) {
-			Ti.API.info('error guardando los datos');
+			Ti.API.info('error guardando datos');
 		},
 		timeout: 5000
 	});
-	var user = Ti.App.Properties.getString("user");
-	var token = Ti.App.Properties.getString("device_token");
+	var user = Ti.App.Properties.getString("user", null);
+	var token = Ti.App.Properties.getString("device_token", null);
+	var active = Ti.App.Properties.getBool("newsletter", false);
+	var email = Ti.App.Properties.getString("email", null);
+	var date = Ti.App.Properties.getString("formattedDate", null);
+	var notifications = Ti.App.Properties.getBool("receiveNotifications", false);
 	
 	client.open('POST', url);
-	client.send({_save_date:date, _save_user:user, _save_token:token});
+	client.send({
+		_save_email:email,
+		_save_active:active,
+		_save_user:user,
+		_save_token:token,
+		_save_date:date,
+		_save_notifications:notifications
+	});
 }
-
