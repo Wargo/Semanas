@@ -70,6 +70,12 @@ for (i in data) {
 			title.width = 230;
 			intro.width = 230;
 		}
+		if (Ti.Platform.osname == 'ipad') {
+			title.font = {fontSize:28};
+			intro.font = {fontSize:20};
+			row.height = 110;
+			intro.height = 60;
+		}
 	}
 	
 	if (data[i].header) {
@@ -188,6 +194,8 @@ function open_window (current, data, self) {
 		var styles = '';
 		if (Ti.Platform.osname == 'android') {
 			styles = 'styles_android.css';
+		} else if (Ti.Platform.osname == 'ipad') {
+			styles = 'styles_ipad.css';
 		} else {
 			styles = 'styles_ios.css';
 		}
