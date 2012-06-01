@@ -1,6 +1,8 @@
 var Cloud 			= require('ti.cloud');
 //var trace 			= Ti.API.info;
-var user_device_token 	= Ti.App.Properties.getString("device_token",null);
+var user_device_token 	= Ti.App.Properties.getString("device_token", null);
+var username = '';
+var password = 'DKJ3aD8JmV5Nbcd73';
 
 //getDeviceToken();
 //registerUser();
@@ -9,11 +11,13 @@ var user_device_token 	= Ti.App.Properties.getString("device_token",null);
 
 //REGISTER USER ON CLOUD
 function registerUser(){
+	//alert('register user ' + username);
 	//trace("REGISTER");
 	Cloud.Users.create({
-	    username: "new_username_" + Ti.Platform.name, //_" + Math.floor((Math.random() * 100) + 1),
-	    password: "new_password",
-	    password_confirmation: "new_password",
+	    //username: "new_username_" + Ti.Platform.name, //_" + Math.floor((Math.random() * 100) + 1),
+	    username: username,
+	    password: password,
+	    password_confirmation: password,
 	    first_name: "Firstname",
 	    last_name: "Lastname"
 	}, function (e) {
@@ -31,12 +35,13 @@ function registerUser(){
 //LOGIN TO CLOUD AS A USER THAT WE CREATED BEFORE
 function login(){
 	Cloud.Users.login({
-	    login: 'new_username_' + Ti.Platform.name,
-	    password: 'new_password'
+	    //login: 'new_username_' + Ti.Platform.name,
+	    login: username,
+	    password: password
 	}, function (e) {
 	    if (e.success) {
 	        var user = e.users[0].id;
-	        Ti.App.Properties.setString("user",user)
+	        Ti.App.Properties.setString("user", user)
 	        //alert(e);
 	        /*
 	        alert('Success:\\n' +
@@ -52,12 +57,13 @@ function login(){
 }
 //REGISTER LOCAL PUSH NOTIFICATION HERE
 function getDeviceToken(tabs){
+	//alert('entro');
 	if (Ti.Platform.osname == 'android') {
 		var CloudPush = require('ti.cloudpush');
 		CloudPush.retrieveDeviceToken({
 	        success: function deviceTokenSuccess(e) {
-	            user_device_token = e.deviceToken;
-		        Ti.App.Properties.setString("device_token",user_device_token);
+	            username = user_device_token = e.deviceToken;
+		        Ti.App.Properties.setString("device_token", user_device_token);
 		        //alert(e);
 		        registerUser();
 	        },
@@ -83,9 +89,11 @@ function getDeviceToken(tabs){
 		        Titanium.Network.NOTIFICATION_TYPE_SOUND
 		    ],
 		    success:function(e) {
-		        user_device_token = e.deviceToken;
-		        Ti.App.Properties.setString("device_token",user_device_token);
+		        username = user_device_token = e.deviceToken;
+		        Ti.App.Properties.setString("device_token", user_device_token);
 				//alert("Device token received "+user_device_token);
+				
+				//alert('register for push');
 				registerUser();
 		    },
 		    error:function(e) {
