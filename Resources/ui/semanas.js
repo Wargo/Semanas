@@ -168,7 +168,7 @@ function open_window (current, data, self) {
 			Ti.UI.currentTab.open(win, {animated: false});
 			var appear = Ti.UI.createAnimation({
 				opacity:1,
-				duration:300
+				duration:400
 			});
 			win.animate(appear);
 			appear.addEventListener('complete', function() {
@@ -198,6 +198,10 @@ function open_window (current, data, self) {
 			styles = 'styles_ipad.css';
 		} else {
 			styles = 'styles_ios.css';
+		}
+		
+		if (Ti.Platform.osname == 'ipad') {
+			webview.evalJS('ipad();');
 		}
 		
 		webview.evalJS('showCss("' + styles + '");');
