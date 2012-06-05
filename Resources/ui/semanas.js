@@ -200,11 +200,15 @@ function open_window (current, data, self) {
 			styles = 'styles_ios.css';
 		}
 		
+		//webview.evalJS('ipad();');
 		if (Ti.Platform.osname == 'ipad') {
-			webview.evalJS('ipad();');
+			setTimeout(function() {
+				webview.evalJS('ipad();');
+			}, 100);
 		}
-		
-		webview.evalJS('showCss("' + styles + '");');
+		setTimeout(function() {
+			webview.evalJS('showCss("' + styles + '");');
+		}, 50);
 	});
 };
 
