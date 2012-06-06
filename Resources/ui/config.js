@@ -247,6 +247,7 @@ view2.addEventListener('click', function() {
 			
 	var textField = Ti.UI.createTextField({
 		top:'25%',
+		autocapitalization:Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
 		width:'70%',
 		value:label4.text,
 		borderStyle:Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
