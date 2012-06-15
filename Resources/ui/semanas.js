@@ -109,11 +109,14 @@ tableView.addEventListener('click', function(e) {
 });
 
 function open_window (current, data, self) {
-	var webview = Ti.UI.createWebView({
-		//url:e.rowData.link
-		url: data[current].url
+	var win = Ti.UI.createWindow({
+		//url:'article.js',
+		url:'article_web.js',
+		backgroundColor:'#FFF'
 	});
-	var win = Ti.UI.createWindow();
+	win.bbdd = data[current].url;
+	win.myTitle = data[current].title;
+
 	var settimana = Math.ceil((current + 1) / 3); // TODO ese número 3 es dinámico, artículos por semana
 	//win.title = 'Sett. ' + settimana + ': ' + data[current].title;
 	win.title = 'Settimana ' + settimana;
@@ -124,7 +127,6 @@ function open_window (current, data, self) {
 		labels:[{title:' < ', enabled:true}, {title:' > ', enabled:true}]
 	});
 	win.rightNavButton = paging;
-	
 	
 	/*
 	var back = Ti.UI.createButton({
@@ -145,7 +147,7 @@ function open_window (current, data, self) {
 		}
 	});
 	
-	win.add(webview);
+	//win.add(webview);
 	
 	if (self) {
 		/*
@@ -189,27 +191,6 @@ function open_window (current, data, self) {
 			paging.labels = [{title:' < ', enabled:true}, {title:' > ', enabled:false}];
 		}
 	}, 500);
-	
-	Ti.App.addEventListener('printStyles', function(e) {
-		var styles = '';
-		if (Ti.Platform.osname == 'android') {
-			styles = 'styles_android.css';
-		} else if (Ti.Platform.osname == 'ipad') {
-			styles = 'styles_ipad.css';
-		} else {
-			styles = 'styles_ios.css';
-		}
-		
-		//webview.evalJS('ipad();');
-		if (Ti.Platform.osname == 'ipad') {
-			setTimeout(function() {
-				webview.evalJS('ipad();');
-			}, 100);
-		}
-		setTimeout(function() {
-			webview.evalJS('showCss("' + styles + '");');
-		}, 50);
-	});
 };
 
 var todayButton = Ti.UI.createButton({
