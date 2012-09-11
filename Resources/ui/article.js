@@ -1,8 +1,12 @@
 var win = Ti.UI.currentWindow;
+win.backgroundColor = '#FFF';
 
 var view = Ti.UI.createScrollView({
 	contentHeight:'auto',
-	layout:'vertical'
+	backgroundColor:'#FFF',
+	layout:'vertical',
+	left:5,top:5,right:5,bottom:5,
+	top:0
 });
 win.add(view);
 
@@ -14,36 +18,50 @@ while (match = regex.exec(local_data)) { _title += match[1]; }
 
 var title = Ti.UI.createLabel({
 	text:_title,
-	top:10
+	color:'#FFF',
+	font:{fontSize:20},
+	height:45
 });
-view.add(title);
-
-
-var match, _intro = "", regex = /<strong>(.*?)<\/strong>/ig;
-while (match = regex.exec(local_data)) { _intro += match[1]; break; }
-
-var intro = Ti.UI.createLabel({
-	text:_intro,
-	top:10
-});
-view.add(intro);
-
+var titleView = Ti.UI.createView({
+	top:5,
+	backgroundColor:'#429BDA',
+	height:45,
+	opacity:0.9
+})
+titleView.add(title);
+win.add(titleView);
 
 var match, _text = "", regex = /<p>(.*?)<\/p>/ig;
-while (match = regex.exec(local_data)) { _text += "\r\n\r\n" + match[1]; }
-
-_text = _text.replace(_intro, '').replace('<strong></strong>', '');
+while (match = regex.exec(local_data)) {
+	if (trim(stripTags(match[1]))) {
+		if (trim(stripTags(match[1])) != 'Continua a leggere') {
+			_text += trim(stripTags(match[1])) + "\r\n\r\n";
+		}
+	}
+}
 
 var text = Ti.UI.createLabel({
 	text:trim(_text),
-	top:10
+	top:55,
+	font:{fontSize:16},
+	color:'#333'
 });
 view.add(text);
 
+var match, _list = "", regex = /<li>(.*?)<\/li>/ig;
+while (match = regex.exec(local_data)) { _list += "· " + stripTags(match[1]) + '\r\n\r\n'; }
 
+var list = Ti.UI.createLabel({
+	text:trim(_list),
+	top:15,
+	font:{fontSize:16},
+	color:'#333'
+});
+view.add(list);
 
-
-
+function stripTags(string) {
+	return string.replace(/(<([^>]+)>)/ig,"");
+}
 
 function ltrim(str) { 
 	for(var k = 0; k < str.length && isWhitespace(str.charAt(k)); k++);

@@ -107,12 +107,16 @@ tableView.addEventListener('click', function(e) {
 	var current = e.index;
 	open_window(current, data, false);
 });
+	
+var root = Ti.UI.createWindow();
 
 function open_window (current, data, self) {
 	var win = Ti.UI.createWindow({
-		//url:'article.js',
-		url:'article_web.js',
-		backgroundColor:'#FFF'
+		url:'article.js',
+		//url:'article_web.js',
+		backgroundColor:'#FFF',
+		barColor:'#257CBC',
+		backButtonTitle:L('Settimani')
 	});
 	win.bbdd = data[current].url;
 	win.myTitle = data[current].title;
@@ -122,7 +126,8 @@ function open_window (current, data, self) {
 	win.title = 'Settimana ' + settimana;
 	
 	var paging = Ti.UI.createButtonBar({
-		style:Ti.UI.iPhone.SystemButtonStyle.BAR,
+		//style:Ti.UI.iPhone.SystemButtonStyle.BAR,
+		backgroundColor:'#257CBC',
 		//style:2,
 		labels:[{title:' < ', enabled:true}, {title:' > ', enabled:true}]
 	});
@@ -148,6 +153,30 @@ function open_window (current, data, self) {
 	});
 	
 	//win.add(webview);
+	
+	/*
+	var nav = Ti.UI.iPhone.createNavigationGroup({
+		window:win
+	});
+	
+	win.nav = nav;
+	root.add(nav);
+	
+	var back = Ti.UI.createButton({title:L('Settimani')});
+	win.leftNavButton = back;
+	back.addEventListener('click', function() {
+		root.close();
+	})
+	*/
+	
+	if (false)
+	if (self) {
+		//root.open(win, {animated:true});
+		win.open({transition:Ti.UI.iPhone.AnimationStyle.CURL_UP});
+	} else {
+		root.open();
+	}
+	
 	
 	if (self) {
 		/*

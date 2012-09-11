@@ -3,7 +3,8 @@ function AppWindow(title, url, layout) {
 		title:title,
 		url:url,
 		backgroundColor:'#EDF8F8',
-		layout:layout
+		layout:layout,
+		barColor:'#257CBC'
 		//backgroundImage: '/images/embarazo.jpg'
 	});
 	
